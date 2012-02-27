@@ -1,5 +1,9 @@
 package lk.ac.ce.mm3d.Math;
 import static org.junit.Assert.*;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import lk.ac.pdn.ce.mm3d.DataStructure.MMElement;
 import lk.ac.pdn.ce.mm3d.DataStructure.MapData;
 
@@ -29,9 +33,42 @@ public class test1 {
 		n3.setName("n3");
 		m1.addElement(n3, root);
 		
+		
+		
 		MMElement n21=new MMElement();
 		n21.setName("n21");
 		m1.addElement(n21, n2);
+		
+		MMElement n31=new MMElement();
+		n31.setName("n31");
+		m1.addElement(n31, n3);
+		
+		MMElement n311=new MMElement();
+		n311.setName("n311");
+		m1.addElement(n311, n31);
+		
+		MMElement n312=new MMElement();
+		n312.setName("n312");
+		m1.addElement(n312, n31);
+		
+		
+		
+		MMElement n11=new MMElement();
+		n11.setName("n11");
+		m1.addElement(n11, n3);
+		
+		MMElement n4=new MMElement();
+		n4.setName("n4");
+		m1.addElement(n4, root);
+		
+		MMElement n5=new MMElement();
+		n5.setName("n5");
+		m1.addElement(n5, root);
+		
+//		MMElement n22=new MMElement();
+//		n22.setName("n22");
+//		m1.addElement(n22, n2);
+		
 		
 		MindMath mm1=new MindMath(10);
 		mm1.positionGenerate(root);
