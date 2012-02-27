@@ -1,6 +1,6 @@
-package lk.ac.ce.mindmap3d.Math;
+package lk.ac.ce.mm3d.Math;
 
-import lk.ac.pdn.ce.mindmap3d.DataStructure.*;
+import lk.ac.pdn.ce.mm3d.DataStructure.*;
 
 /* 
  * Note- Calculations are happens using radions

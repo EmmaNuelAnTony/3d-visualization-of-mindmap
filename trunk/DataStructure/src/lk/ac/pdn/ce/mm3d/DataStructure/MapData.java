@@ -1,4 +1,4 @@
-package lk.ac.pdn.ce.mindmap3d.DataStructure;
+package lk.ac.pdn.ce.mm3d.DataStructure;
 
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
