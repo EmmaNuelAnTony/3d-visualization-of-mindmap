@@ -1,7 +1,7 @@
-package lk.ac.ce.mindmap3d.Math;
+package lk.ac.ce.mm3d.Math;
 import static org.junit.Assert.*;
-import lk.ac.pdn.ce.mindmap3d.DataStructure.MMElement;
-import lk.ac.pdn.ce.mindmap3d.DataStructure.MapData;
+import lk.ac.pdn.ce.mm3d.DataStructure.MMElement;
+import lk.ac.pdn.ce.mm3d.DataStructure.MapData;
 
 import org.junit.Test;
 
