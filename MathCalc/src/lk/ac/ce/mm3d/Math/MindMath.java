@@ -34,9 +34,9 @@ public class MindMath {
 	}
 	
 	private void setPositionAsCartician(MMElement element,double r, double a,double b){
-		double x = Math.round(r* Math.sin(b)*Math.cos(a));
-		double y = Math.round(r* Math.sin(b)*Math.sin(a));
-		double z = Math.round(r* Math.cos(b));
+		double x =r* Math.sin(b)*Math.cos(a);
+		double y =r* Math.sin(b)*Math.sin(a);
+		double z = r* Math.cos(b);
 		//System.out.println(element.getName());
 		//System.out.println(x+","+y+","+z);
 		element.setPosition(new Position(x,y,z));
