@@ -20,6 +20,7 @@ public class MMElement {
 		children=new LinkedList<MMElement>();
 	}
 	
+
 	protected void addChild(MMElement child){
 		children.add(child);
 	}
