@@ -52,6 +52,7 @@ public class MapData {
 	}
 	
 	/**
+	 * @deprecated Problems due to android Incompatibility
 	 * To load new mind map from file.Existing map will be deleted
 	 * @param fileName
 	 * @throws IOException 
@@ -63,6 +64,7 @@ public class MapData {
 	}
 	
 	/**
+	 * @deprecated Problems due to android Incompatibility
 	 * Save existing mind map into a file 
 	 * @param fileName
 	 * @throws TransformerException 
@@ -70,5 +72,10 @@ public class MapData {
 	 */
 	public synchronized void saveXML(String fileName) throws ParserConfigurationException, TransformerException{
 		XMLFile.saveXML(fileName, root);
+	}
+	
+	
+	public synchronized String getXML() throws TransformerException, IOException, ParserConfigurationException{
+		return XMLFile.getString(root);
 	}
 }
