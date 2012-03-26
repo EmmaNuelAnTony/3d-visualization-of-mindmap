@@ -96,12 +96,7 @@ class XMLFile {
 		
 	}
 
-	/**
-	 * to set the nodes using XML string
-	 * @param parent
-	 * @param xmlParent
-	 * @param doc
-	 */
+
 	private static void appendChildElementsToXML(MMElement parent,
 			Element xmlParent, Document doc) {
 		List<MMElement> children = parent.getChildren();
@@ -119,6 +114,14 @@ class XMLFile {
 		}
 	}
 	
+	/**
+	 * to set the nodes using XML string
+	 * @param xml
+	 * @param map
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
 	protected static void setXML(String xml,MapData map) throws ParserConfigurationException, SAXException, IOException{
 		MMElement rootElement = map.getRoot();
 
