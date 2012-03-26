@@ -14,6 +14,14 @@ import javax.xml.transform.stream.*;
 
 class XMLFile {
 	
+	/**
+	 * To get ming map xml output
+	 * @param rootElement
+	 * @return XML output
+	 * @throws TransformerException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 */
 	protected static String getXML(MMElement rootElement) throws TransformerException, IOException, ParserConfigurationException{
 		DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
@@ -88,6 +96,12 @@ class XMLFile {
 		
 	}
 
+	/**
+	 * to set the nodes using XML string
+	 * @param parent
+	 * @param xmlParent
+	 * @param doc
+	 */
 	private static void appendChildElementsToXML(MMElement parent,
 			Element xmlParent, Document doc) {
 		List<MMElement> children = parent.getChildren();
