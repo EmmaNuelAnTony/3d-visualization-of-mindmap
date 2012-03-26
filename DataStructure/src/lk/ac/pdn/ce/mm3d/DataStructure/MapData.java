@@ -52,7 +52,7 @@ public class MapData {
 	}
 	
 	/**
-	 * @deprecated Problems due to android Incompatibility
+	 * @deprecated Problems due to android Incompatibility.use setXML() instead
 	 * To load new mind map from file.Existing map will be deleted
 	 * @param fileName
 	 * @throws IOException 
@@ -64,7 +64,7 @@ public class MapData {
 	}
 	
 	/**
-	 * @deprecated Problems due to android Incompatibility
+	 * @deprecated Problems due to android Incompatibility.use getXML() instead.
 	 * Save existing mind map into a file 
 	 * @param fileName
 	 * @throws TransformerException 
@@ -74,8 +74,25 @@ public class MapData {
 		XMLFile.saveXML(fileName, root);
 	}
 	
-	
+	/**
+	 * to get ming map xml output
+	 * @return XML output
+	 * @throws TransformerException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 */
 	public synchronized String getXML() throws TransformerException, IOException, ParserConfigurationException{
-		return XMLFile.getString(root);
+		return XMLFile.getXML(root);
+	}
+	
+	/**
+	 * to set the nodes using XML
+	 * @param xml XML String
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	public synchronized void setXML(String xml) throws ParserConfigurationException, SAXException, IOException{
+		XMLFile.setXML(xml, this);
 	}
 }
