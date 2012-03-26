@@ -13,8 +13,43 @@ import javax.xml.transform.stream.*;
 
 
 class XMLFile {
+	
+	protected static String getString(MMElement rootElement) throws TransformerException, IOException, ParserConfigurationException{
+		DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
+		Document doc = docBuilder.newDocument();
+
+		// create the root element and add it to the document
+		Element root = doc.createElement("node");
+		root.setAttribute("name", rootElement.getName());
+		doc.appendChild(root);
+
+		appendChildElementsToXML(rootElement, root, doc);
+
+		// set up a transformer
+		TransformerFactory transfac = TransformerFactory.newInstance();
+		Transformer trans = transfac.newTransformer();
+		trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		trans.setOutputProperty(OutputKeys.INDENT, "yes");
+
+		// print to file
+		//File file = new File(fileName);
+		//Result result = new StreamResult(file);
+
+		StringWriter writer = new StringWriter();
+		Result result = new StreamResult(writer);
+		
+		// Write the DOM document to the file
+		DOMSource source = new DOMSource(doc);
+		Transformer xformer = TransformerFactory.newInstance().newTransformer();
+		xformer.transform(source, result);
+		writer.close();
+		return writer.toString();
+		
+	}
 
 	/**
+	 * @deprecated Problems due to android Incompatibility
 	 * Save Datastructure to XML file
 	 * @param fileName 
 	 * @param rootElement
@@ -49,6 +84,8 @@ class XMLFile {
 		DOMSource source = new DOMSource(doc);
 		Transformer xformer = TransformerFactory.newInstance().newTransformer();
 		xformer.transform(source, result);
+		
+		
 	}
 
 	private static void appendChildElementsToXML(MMElement parent,
@@ -69,6 +106,7 @@ class XMLFile {
 	}
 
 	/**
+	 * @deprecated Problems due to android Incompatibility
 	 * retrive XML file into the datastructure
 	 * @param fileName
 	 * @param map
