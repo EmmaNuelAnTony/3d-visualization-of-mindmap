@@ -1,6 +1,9 @@
 package lk.ac.pdn.ce.mm3d;
 
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import lk.ac.ce.mm3d.Math.MindMath;
 import lk.ac.pdn.ce.mm3d.DataStructure.MMElement;
 import lk.ac.pdn.ce.mm3d.DataStructure.MapData;
@@ -28,6 +31,10 @@ public class Obj3DView extends RendererActivity
 	
 	private float prevSwipeY,swipeY,prevSwipeX,swipeX,prevSwipeZ,swipeZ;
 	private long downTime,actionTime;
+	private MapData m1;
+	private Node rootNode;
+	private MindMath mm1;
+	private MMElement root;
 			
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,13 +86,29 @@ public class Obj3DView extends RendererActivity
 			downTime=System.currentTimeMillis();
 			break;
 		case MotionEvent.ACTION_UP:
+			actionTime=System.currentTimeMillis()-downTime;
+			
+			
+			if(actionTime<3000){
+			createNewNode(m1.getRoot(),"testnew");
+			}
 //			downTime=Long.MAX_VALUE;
 			break;
 		case MotionEvent.ACTION_MOVE:
-			actionTime=System.currentTimeMillis()-downTime;
 			swipeX=event.getX();
 			swipeY=event.getY();
-			if(actionTime<3000){
+			float a=swipeY-prevSwipeY;
+			float b=swipeX-prevSwipeX;
+			//Log.v("out"," "+swipeX+","+swipeY);
+			
+			
+				
+			actionTime=System.currentTimeMillis()-downTime;
+			
+			
+			if(actionTime<3000){		// touch and move, move the camera
+				
+				if((swipeX-prevSwipeX)>5 || (swipeY-prevSwipeY)>5){
 				
 				scene.camera().position.x-=(swipeX-prevSwipeX)/40;
 				scene.camera().target.x-=(swipeX-prevSwipeX)/40;
@@ -94,12 +117,15 @@ public class Obj3DView extends RendererActivity
 				scene.camera().position.y+=(swipeY-prevSwipeY)/400;
 				scene.camera().target.y+=(swipeY-prevSwipeY)/400;
 				downTime=System.currentTimeMillis();
-			} else {
+				}
+			} else {		// touch and hold for 3sec and then move,  rotate the camera
 				scene.camera().position.x-=(swipeX-prevSwipeX);
 				scene.camera().position.y+=(swipeY-prevSwipeY);
 			}
+			
 			prevSwipeX=swipeX;
 			prevSwipeY=swipeY;
+			
 			
 			break;
 		}
@@ -110,9 +136,9 @@ public class Obj3DView extends RendererActivity
 		return super.onTouchEvent(event);
 	}
 	
-	public void test() {
-		MapData m1=new MapData("test map");
-		MMElement root= m1.getRoot();
+	public void test() {		// test 3D model, hard coded nodes
+		m1=new MapData("test map");
+		root= m1.getRoot();
 		
 		MMElement n1=new MMElement();
 		n1.setName("n1");
@@ -227,32 +253,59 @@ public class Obj3DView extends RendererActivity
 		m1.addElement(n22, n2);
 		
 		
-		MindMath mm1=new MindMath(5);
+		mm1=new MindMath(5);
 		mm1.positionGenerate(root);
 		
 		addAllNodes(root,null);
+		
 	}
+	
+	private void createNewNode(MMElement ele,String name){
+		MMElement newele=new MMElement();
+		newele.setName("name");
+		m1.addElement(newele, m1.getRoot());
+		mm1.positionGenerate(root);
+		scene.reset();
+		scene.lights().add(new Light());
+		scene.lightingEnabled(true);
+		scene.backgroundColor().setAll(new Color4(0,0,255,100));
+		addAllNodes(root,null);
+		//addNewNode(newele,rootNode);
+		
+		
+	}
+	
+	
 	
 	private void addAllNodes(MMElement e1,Node parent){
 		
-		Node n1;
-		if(parent==null){
-			n1=new Node(black);
-			scene.addChild(n1);
-		} else{
-			n1=new Node(parent);
-			n1.position().setAll((float) e1.getPosition().getX(), (float) e1.getPosition().getZ(),(float) e1.getPosition().getY());
-//			Log.v("coords",e1.getPosition().getX()+","+e1.getPosition().getZ()+","+e1.getPosition().getY());
-			n1.buildParentLink();
-			scene.addChild(n1);
-			scene.addChild(n1.getParentLink());
-		}
+		Node n1=addNewNode(e1,parent);
 		
 //		System.out.println(e1.getName());
 //		System.out.println(e1.getPosition().getX()+","+e1.getPosition().getY()+","+e1.getPosition().getZ()+"\n");
 		for(MMElement c1:e1.getChildren()){
 			addAllNodes(c1,n1);
 		}
+	}
+	
+	private Node addNewNode(MMElement e1,Node parent){
+		
+		if(parent==null){
+			rootNode=new Node(black);
+			scene.addChild(rootNode);
+			return rootNode;
+		} else{
+			Node n1=new Node(parent);
+			//Log.v("coords",e1.getPosition().getX()+","+e1.getPosition().getZ()+","+e1.getPosition().getY());
+			//Log.v("e1x null?", e1==null ? "null" : "not null");
+			n1.position().setAll((float) e1.getPosition().getX(), (float) e1.getPosition().getZ(),(float) e1.getPosition().getY());
+			n1.buildParentLink();
+			scene.addChild(n1);
+			scene.addChild(n1.getParentLink());
+			return n1;
+		}
+		
+		
 	}
 	
 
