@@ -14,7 +14,7 @@ import javax.xml.transform.stream.*;
 
 class XMLFile {
 	
-	protected static String getString(MMElement rootElement) throws TransformerException, IOException, ParserConfigurationException{
+	protected static String getXML(MMElement rootElement) throws TransformerException, IOException, ParserConfigurationException{
 		DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
 		Document doc = docBuilder.newDocument();
@@ -49,7 +49,7 @@ class XMLFile {
 	}
 
 	/**
-	 * @deprecated Problems due to android Incompatibility
+	 * @deprecated Problems due to android Incompatibility.use getString instead
 	 * Save Datastructure to XML file
 	 * @param fileName 
 	 * @param rootElement
@@ -104,9 +104,24 @@ class XMLFile {
 			}
 		}
 	}
+	
+	protected static void setXML(String xml,MapData map) throws ParserConfigurationException, SAXException, IOException{
+		MMElement rootElement = map.getRoot();
+
+		ByteArrayInputStream stream = new ByteArrayInputStream(xml.getBytes());
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(stream);
+		doc.getDocumentElement().normalize();
+
+		// remove old mindmap data
+		rootElement.getChildren().clear();
+		rootElement.setName(doc.getDocumentElement().getAttribute("name"));
+		appendChildElementsFromXML(rootElement, doc.getDocumentElement(), map);
+	}
 
 	/**
-	 * @deprecated Problems due to android Incompatibility
+	 * @deprecated Problems due to android Incompatibility. use setXML instead
 	 * retrive XML file into the datastructure
 	 * @param fileName
 	 * @param map
