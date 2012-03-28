@@ -9,9 +9,9 @@ With contrast to other traditional note taking methods mind maps proves to use 9
 = Color Scheme =
 
 ==Types of Objects in a Mind Map==
-# numbered list Main idea – The topic of the mind map.
-2. Main topics – The main categories of the mind map. These are the most adjacent level of main idea.
-3. Sub topics – Objects which are connected to the main topics and subtopics (recursively).
+# Main idea – The topic of the mind map.
+# Main topics – The main categories of the mind map. These are the most adjacent level of main idea.
+# Sub topics – Objects which are connected to the main topics and subtopics (recursively).
  
 Apart from those objects, following elements are also required to complete the mind map.
 1. Connectors – To connect objects each other.
