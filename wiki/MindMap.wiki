@@ -33,3 +33,17 @@ Color Scheme
 ===Call-outs (Optional)===
 
             	If the application can contain some call-outs to state the comments and other important data, they all should have the same color and that color should be different from all the colors which are used in the mind map. This color should not make the text inside it hard to read.
+
+=Mindmap Design=
+In this application, the mind map is stored in an XML document. Each node in an XML doc-ument represents a node in a mind map. The application will be capable of saving a graphical
+representation to an XML document and construct graphical representation out of a valid XML
+document. Therefore, generating a mind-map to be displayed in the developed software can be
+done in different ways. The software itself will be able to construct such XML. Other software
+will be able to output XML documents that is compatible with this and also users will be able
+to manually write XML as well.The application allows some user interactions. User can rotate
+and Zoom the view. Interactions would be optimized for touch based systems.
+The Mindmap application drives using openGL graphics engine. Since our target platform is
+mobile based, opengl for embedded Systems(openGl ES) would be used.
+Our mind map is based on Spherical layout in order to allow maximum use of the 3D. Also
+when arranging the nodes,Veho algorithm is used to avoid overlapping of branches of the
+mindmap.Special color schema described in the previous chapter is used to for clear separa-tion of layers and to enhance visibility
