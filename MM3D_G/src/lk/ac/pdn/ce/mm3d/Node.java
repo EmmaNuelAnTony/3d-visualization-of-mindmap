@@ -1,5 +1,6 @@
 package lk.ac.pdn.ce.mm3d;
 
+import lk.ac.pdn.ce.mm3d.DataStructure.MMElement;
 import android.util.Log;
 import com.threed.jpct.Object3D;
 import com.threed.jpct.Primitives;
@@ -11,16 +12,18 @@ public class Node extends Object3D{
 	private Node parent;
 	private Link parentLink;
 	private int level;
+	private MMElement mmElement;
+	
 	
 	public Node(RGBColor color){			// no parent means root node
-		super(Primitives.getSphere(1));
-		this.setAdditionalColor(color);
+		super(Primitives.getSphere(3));
+		setAdditionalColor(color);
 		level=0;
 	}
 	
 	public Node(Node p,RGBColor color){
-		super(Primitives.getSphere(1));
-		this.setAdditionalColor(color);
+		super(Primitives.getSphere(2));
+		setAdditionalColor(color);
 		parent=p;
 		level=parent.getLevel();
 //		buildParentLink();
@@ -31,8 +34,8 @@ public class Node extends Object3D{
 //		super(0.5f,40,40,
 //				p.getLevel()>0 ? new Color4((p.colors().getPropertyR(0)+150) % 255,(p.colors().getPropertyB(0)+200) % 255,(p.colors().getPropertyG(0)+200) % 255,255): new Color4((float) (Math.random() * 255),(float) (Math.random() * 255),(float) (Math.random() * 255),255));
 		
-		super(Primitives.getSphere(1));
-		this.setAdditionalColor(new RGBColor((int) Math.random()*255,(int) Math.random()*255,(int) Math.random()*255));
+		super(Primitives.getSphere(2));
+		setAdditionalColor(new RGBColor((int) Math.random()*255,(int) Math.random()*255,(int) Math.random()*255));
 		
 		parent=p;
 		level=parent.getLevel()+1;
@@ -51,6 +54,16 @@ public class Node extends Object3D{
 
 	public Link getParentLink() {
 		return parentLink;
+	}
+
+	
+
+	public MMElement getMmElement() {
+		return mmElement;
+	}
+
+	public void setMmElement(MMElement mmElement) {
+		this.mmElement = mmElement;
 	}
 
 	public void buildParentLink(){
@@ -85,8 +98,8 @@ public class Node extends Object3D{
 		 */
 		float ry,rz,rx;	//rotation amount, in degrees
 		ry=getAngle(parentx-thisx,parentz-thisz);
-		rz=getAngle(parenty-thisy,parentx-thisx);
-		rx=getAngle(parenty-thisy,parentz-thisz);
+		rz=getAngle(parentx-thisx,parenty-thisy);
+		rx=getAngle(parentz-thisz,parenty-thisy);
 		
 //		Log.v("position", thisx+","+thisy+","+thisz);
 //		Log.v("position", thisx+","+thisy+","+thisz+","+parentx+","+parenty+","+parentz);
@@ -94,9 +107,9 @@ public class Node extends Object3D{
 //		Log.v("z angle",","+rx);
 		
 		parentLink=new Link(d);
-//		parentLink.rotateX(-rx);
+		parentLink.rotateX(-rx);
 //		parentLink.rotateY(ry);
-		parentLink.rotateZ(rz);
+		parentLink.rotateZ(rz*1.8f);
 //		parentLink.rotation().setAll(-rx, ry, 0f);
 //		parentLink.rotation().add(new Number3d(45,45,45));
 //		parentLink.rotation().x+=-rx;

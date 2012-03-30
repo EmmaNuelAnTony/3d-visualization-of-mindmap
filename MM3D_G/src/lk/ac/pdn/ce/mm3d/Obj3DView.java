@@ -19,6 +19,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.threed.jpct.Camera;
@@ -67,6 +68,8 @@ public class Obj3DView extends Activity {
 	private Node rootNode;
 	private MindMath mm1;
 	private MMElement root;
+	private Node touchedNode=null;
+	private int working=0;
 	
 	// Basic colors
 	RGBColor black=new RGBColor(0,0,0,255);
@@ -135,7 +138,30 @@ public class Obj3DView extends Activity {
 
 	public boolean onTouchEvent(MotionEvent event) {
 
+		SimpleVector dir=Interact2D.reproject2D3DWS(cam, fb,(int) event.getX(),(int) event.getY()).normalize();
+		Object[] res=world.calcMinDistanceAndObject3D(cam.getPosition(), dir, 10000);
+		
+		
+		
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			
+			for(Object ob:res){
+//				if(ob!=null && (ob instanceof Node)){
+//					Log.v("object", ob.getClass().toString());
+//					touchedNode=(Node) ob;
+////					world.removeAllObjects();
+//					
+//					MMElement n1 = new MMElement();
+//					n1.setName("generated");
+//					m1.addElement(touchedNode.getMmElement(), root);
+//					
+//					mm1 = new MindMath(10);
+//					mm1.positionGenerate(root);
+//					
+//					renderer.addAllNodes(root, null);
+//				}
+			}
+			
 			prevSwipeX=event.getX();
 			prevSwipeY=event.getY();
 			downTime=System.currentTimeMillis();
@@ -145,7 +171,7 @@ public class Obj3DView extends Activity {
 		if (event.getAction() == MotionEvent.ACTION_UP) {
 			actionTime=System.currentTimeMillis()-downTime;
 			
-			
+//			drawSphere(-40, 50, 90, 10, new RGBColor(0, 255, 0));
 			if(actionTime<3000){
 //			createNewNode(m1.getRoot(),"testnew");
 			}
@@ -210,6 +236,20 @@ public class Obj3DView extends Activity {
 	protected boolean isFullscreenOpaque() {
 		return true;
 	}
+	
+	public Object3D drawSphere(double x, double y, double z, int radious,
+			RGBColor color) {
+		Object3D cube1 = Primitives.getSphere(radious);
+		cube1.strip();
+		cube1.build();
+		
+		
+		
+		cube1.setOrigin(new SimpleVector(x, y, z));
+		cube1.setAdditionalColor(color);
+		world.addObject(cube1);
+		return cube1;
+	}
 
 	class MyRenderer implements GLSurfaceView.Renderer {
 		
@@ -247,11 +287,11 @@ public class Obj3DView extends Activity {
 
 				//world.addObject(cube);
 
-				Object3D ob1 = drawSphere(10, 20, 30, 10, new RGBColor(255, 0,
-						0));
-
-				drawSphere(-40, 50, 90, 10, new RGBColor(0, 255, 0));
-				drawSphere(-40, -50, 200, 10, new RGBColor(0, 0, 255));
+//				Object3D ob1 = drawSphere(10, 20, 30, 10, new RGBColor(255, 0,
+//						0));
+//
+//				drawSphere(-40, 50, 90, 10, new RGBColor(0, 255, 0));
+//				drawSphere(-40, -50, 200, 10, new RGBColor(0, 0, 255));
 
 				cam = world.getCamera();
 				cam.moveCamera(Camera.CAMERA_MOVEOUT, 100);
@@ -396,6 +436,12 @@ public class Obj3DView extends Activity {
 			
 			
 		}
+		
+		private void createNewNode(MMElement ele,String name){
+
+			
+			
+		}
 
 		public Object3D drawSphere(double x, double y, double z, int radious,
 				RGBColor color) {
@@ -411,7 +457,7 @@ public class Obj3DView extends Activity {
 			return cube1;
 		}
 
-		private void addAllNodes(MMElement e1,Node parent){
+		public void addAllNodes(MMElement e1,Node parent){
 			
 			Node n1=addNewNode(e1,parent);
 			
@@ -425,6 +471,9 @@ public class Obj3DView extends Activity {
 			if(parent==null){
 				rootNode=new Node(black);
 				rootNode.setOrigin(new SimpleVector(0,0,0));
+				rootNode.setMmElement(e1);
+//				rootNode.setAdditionalColor(black);
+				rootNode.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
 				rootNode.strip();
 				rootNode.build();
 				world.addObject(rootNode);
@@ -434,6 +483,10 @@ public class Obj3DView extends Activity {
 				//Log.v("coords",e1.getPosition().getX()+","+e1.getPosition().getZ()+","+e1.getPosition().getY());
 				//Log.v("e1x null?", e1==null ? "null" : "not null");
 				n1.setOrigin(new SimpleVector((float) e1.getPosition().getX(), (float) e1.getPosition().getY(),(float) e1.getPosition().getZ()));
+				n1.setMmElement(e1);
+				//n1.setAdditionalColor(red);
+//				n1.setAdditionalColor(new RGBColor((int) Math.random()*255,(int) Math.random()*255,(int) Math.random()*255));
+				n1.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
 				n1.strip();
 				n1.build();
 				world.addObject(n1);
@@ -453,20 +506,20 @@ public class Obj3DView extends Activity {
 		}
 
 		public void onDrawFrame(GL10 gl) {
-//			if (touchTurn != 0) {
-//				// cam.transform(new SimpleVector(0,0,touchTurn));
-//				// cam.moveCamera(MODE_WORLD_READABLE, 10);
-//				// cam.rotateCameraAxis(new SimpleVector(0, 1, 0), touchTurn);
-//				// cam.rotateCameraX(touchTurn);
-//				cam.rotateY(touchTurn);
-//				touchTurn = 0;
-//			}
-//
-//			if (touchTurnUp != 0) {
-//				// cam.transform(new SimpleVector(0,touchTurn,0));
-//				cam.rotateX(touchTurnUp);
-//
-//				touchTurnUp = 0;
+
+			
+//			if(touchedNode!=null){
+//				fb.dispose();
+//				working=1;
+//				world.removeAllObjects();
+//				MemoryHelper.compact();
+//				Node x=touchedNode;
+//				touchedNode=null;
+//				MMElement n1 = new MMElement();
+//				n1.setName("generated");
+//				m1.addElement(x.getMmElement(), root);
+//				addAllNodes(root,null);
+//				working=0;
 //			}
 			
 			fb.clear(back);

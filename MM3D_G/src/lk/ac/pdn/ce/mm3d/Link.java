@@ -7,7 +7,7 @@ import com.threed.jpct.SimpleVector;
 public class Link extends Object3D{
 	
 	public Link(float d){
-		super(Primitives.getCylinder(10, 0.5f, d*2));
+		super(Primitives.getCylinder(10, 0.5f, d));
 		this.setOrigin(new SimpleVector(0,0,0));
 	}
 	
