@@ -58,24 +58,24 @@ public class Obj3DView extends Activity {
 	private int fps = 0;
 	private Camera cam;
 	private Light sun = null;
-	
+
 	// Used to handle touch operation
-	private float prevSwipeY,swipeY,prevSwipeX,swipeX,prevSwipeZ,swipeZ;
-	private long downTime,actionTime;
-	
+	private float prevSwipeY, swipeY, prevSwipeX, swipeX, prevSwipeZ, swipeZ;
+	private long downTime, actionTime;
+
 	// Used to handle mind map structure
 	private MapData m1;
 	private Node rootNode;
 	private MindMath mm1;
 	private MMElement root;
-	private Node touchedNode=null;
-	private int working=0;
-	
+	private Node touchedNode = null;
+	private int working = 0;
+
 	// Basic colors
-	RGBColor black=new RGBColor(0,0,0,255);
-	RGBColor red=new RGBColor(255,0,0,255);
-	RGBColor green=new RGBColor(0,255,0,255);
-	RGBColor blue=new RGBColor(0,0,255,255);
+	RGBColor black = new RGBColor(0, 0, 0, 255);
+	RGBColor red = new RGBColor(255, 0, 0, 255);
+	RGBColor green = new RGBColor(0, 255, 0, 255);
+	RGBColor blue = new RGBColor(0, 0, 255, 255);
 
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -138,89 +138,89 @@ public class Obj3DView extends Activity {
 
 	public boolean onTouchEvent(MotionEvent event) {
 
-		SimpleVector dir=Interact2D.reproject2D3DWS(cam, fb,(int) event.getX(),(int) event.getY()).normalize();
-		Object[] res=world.calcMinDistanceAndObject3D(cam.getPosition(), dir, 10000);
-		
-		
-		
+		SimpleVector dir = Interact2D.reproject2D3DWS(cam, fb,
+				(int) event.getX(), (int) event.getY()).normalize();
+		Object[] res = world.calcMinDistanceAndObject3D(cam.getPosition(), dir,
+				10000);
+
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			
-			for(Object ob:res){
-//				if(ob!=null && (ob instanceof Node)){
-//					Log.v("object", ob.getClass().toString());
-//					touchedNode=(Node) ob;
-////					world.removeAllObjects();
-//					
-//					MMElement n1 = new MMElement();
-//					n1.setName("generated");
-//					m1.addElement(touchedNode.getMmElement(), root);
-//					
-//					mm1 = new MindMath(10);
-//					mm1.positionGenerate(root);
-//					
-//					renderer.addAllNodes(root, null);
-//				}
+
+			for (Object ob : res) {
+				// if(ob!=null && (ob instanceof Node)){
+				// Log.v("object", ob.getClass().toString());
+				// touchedNode=(Node) ob;
+				// // world.removeAllObjects();
+				//
+				// MMElement n1 = new MMElement();
+				// n1.setName("generated");
+				// m1.addElement(touchedNode.getMmElement(), root);
+				//
+				// mm1 = new MindMath(10);
+				// mm1.positionGenerate(root);
+				//
+				// renderer.addAllNodes(root, null);
+				// }
 			}
-			
-			prevSwipeX=event.getX();
-			prevSwipeY=event.getY();
-			downTime=System.currentTimeMillis();
+
+			prevSwipeX = event.getX();
+			prevSwipeY = event.getY();
+			downTime = System.currentTimeMillis();
 			return true;
 		}
 
 		if (event.getAction() == MotionEvent.ACTION_UP) {
-			actionTime=System.currentTimeMillis()-downTime;
-			
-//			drawSphere(-40, 50, 90, 10, new RGBColor(0, 255, 0));
-			if(actionTime<3000){
-//			createNewNode(m1.getRoot(),"testnew");
+			actionTime = System.currentTimeMillis() - downTime;
+
+			// drawSphere(-40, 50, 90, 10, new RGBColor(0, 255, 0));
+			if (actionTime < 3000) {
+				// createNewNode(m1.getRoot(),"testnew");
 			}
 			return true;
 		}
 
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
-//			float xd = me.getX() - xpos;
-//			float yd = me.getY() - ypos;
-//
-//			xpos = me.getX();
-//			ypos = me.getY();
-//
-//			touchTurn = xd / -100f;
-//			touchTurnUp = yd / -100f;
-			///////////////////////////////////////////////////////
-			
-			swipeX=event.getX();
-			swipeY=event.getY();
-			float a=swipeY-prevSwipeY;
-			float b=swipeX-prevSwipeX;
-			//Log.v("out"," "+swipeX+","+swipeY);
-			
-			
-				
-			actionTime=System.currentTimeMillis()-downTime;
-			
-			SimpleVector campos=cam.getPosition();
-			if(actionTime<3000){		// touch and move, move the camera
-				
-				if((swipeX-prevSwipeX)>5 || (swipeY-prevSwipeY)>5){
-				cam.setPosition(campos.x-(swipeX-prevSwipeX)/40, campos.y+(swipeY-prevSwipeY)/400, campos.z);
-				
-//				scene.camera().position.x-=(swipeX-prevSwipeX)/40;
-//				scene.camera().target.x-=(swipeX-prevSwipeX)/40;
-//				
-//				
-//				scene.camera().position.y+=(swipeY-prevSwipeY)/400;
-//				scene.camera().target.y+=(swipeY-prevSwipeY)/400;
-				downTime=System.currentTimeMillis();
+			// float xd = me.getX() - xpos;
+			// float yd = me.getY() - ypos;
+			//
+			// xpos = me.getX();
+			// ypos = me.getY();
+			//
+			// touchTurn = xd / -100f;
+			// touchTurnUp = yd / -100f;
+			// /////////////////////////////////////////////////////
+
+			swipeX = event.getX();
+			swipeY = event.getY();
+			float a = swipeY - prevSwipeY;
+			float b = swipeX - prevSwipeX;
+			// Log.v("out"," "+swipeX+","+swipeY);
+
+			actionTime = System.currentTimeMillis() - downTime;
+
+			SimpleVector campos = cam.getPosition();
+			if (actionTime < 3000) { // touch and move, move the camera
+
+				if ((swipeX - prevSwipeX) > 5 || (swipeY - prevSwipeY) > 5) {
+					cam.setPosition(campos.x - (swipeX - prevSwipeX) / 40,
+							campos.y + (swipeY - prevSwipeY) / 400, campos.z);
+
+					// scene.camera().position.x-=(swipeX-prevSwipeX)/40;
+					// scene.camera().target.x-=(swipeX-prevSwipeX)/40;
+					//
+					//
+					// scene.camera().position.y+=(swipeY-prevSwipeY)/400;
+					// scene.camera().target.y+=(swipeY-prevSwipeY)/400;
+					downTime = System.currentTimeMillis();
 				}
-			} else {		// touch and hold for 3sec and then move,  rotate the camera
-				cam.setPosition(campos.x-(swipeX-prevSwipeX), campos.y+(swipeY-prevSwipeY), campos.z);
-//				scene.camera().position.x-=(swipeX-prevSwipeX);
-//				scene.camera().position.y+=(swipeY-prevSwipeY);
+			} else { // touch and hold for 3sec and then move, rotate the camera
+				cam.setPosition(campos.x - (swipeX - prevSwipeX), campos.y
+						+ (swipeY - prevSwipeY), campos.z);
+				// scene.camera().position.x-=(swipeX-prevSwipeX);
+				// scene.camera().position.y+=(swipeY-prevSwipeY);
 			}
 			cam.lookAt(rootNode.getOrigin());
-			prevSwipeX=swipeX;
-			prevSwipeY=swipeY;			
+			prevSwipeX = swipeX;
+			prevSwipeY = swipeY;
 			return true;
 		}
 
@@ -229,22 +229,19 @@ public class Obj3DView extends Activity {
 		} catch (Exception e) {
 			// No need for this...
 		}
-
 		return super.onTouchEvent(event);
 	}
 
 	protected boolean isFullscreenOpaque() {
 		return true;
 	}
-	
+
 	public Object3D drawSphere(double x, double y, double z, int radious,
 			RGBColor color) {
 		Object3D cube1 = Primitives.getSphere(radious);
 		cube1.strip();
 		cube1.build();
-		
-		
-		
+
 		cube1.setOrigin(new SimpleVector(x, y, z));
 		cube1.setAdditionalColor(color);
 		world.addObject(cube1);
@@ -252,10 +249,23 @@ public class Obj3DView extends Activity {
 	}
 
 	class MyRenderer implements GLSurfaceView.Renderer {
-		
-		
+
+		private boolean stop = false;
+		private boolean stopNextTime = false;
 
 		private long time = System.currentTimeMillis();
+
+		public synchronized void stopNextTime() {
+			stopNextTime = true;
+		}
+
+		public synchronized void resume() {
+			stop = false;
+		}
+
+		public synchronized void stop() {
+			stop = true;
+		}
 
 		public MyRenderer() {
 		}
@@ -276,22 +286,23 @@ public class Obj3DView extends Activity {
 
 				cube = Primitives.getSphere(1);
 
-//				Texture texture = new Texture(BitmapHelper.rescale(
-//						BitmapHelper.convert(getResources().getDrawable(
-//								R.drawable.icon)), 64, 64));
-//				TextureManager.getInstance().addTexture("texture", texture);
-//				cube.calcTextureWrapSpherical();
-//				cube.setTexture("texture");
+				// Texture texture = new Texture(BitmapHelper.rescale(
+				// BitmapHelper.convert(getResources().getDrawable(
+				// R.drawable.icon)), 64, 64));
+				// TextureManager.getInstance().addTexture("texture", texture);
+				// cube.calcTextureWrapSpherical();
+				// cube.setTexture("texture");
 				cube.strip();
 				cube.build();
 
-				//world.addObject(cube);
+				// world.addObject(cube);
 
-//				Object3D ob1 = drawSphere(10, 20, 30, 10, new RGBColor(255, 0,
-//						0));
-//
-//				drawSphere(-40, 50, 90, 10, new RGBColor(0, 255, 0));
-//				drawSphere(-40, -50, 200, 10, new RGBColor(0, 0, 255));
+				// Object3D ob1 = drawSphere(10, 20, 30, 10, new RGBColor(255,
+				// 0,
+				// 0));
+				//
+				// drawSphere(-40, 50, 90, 10, new RGBColor(0, 255, 0));
+				// drawSphere(-40, -50, 200, 10, new RGBColor(0, 0, 255));
 
 				cam = world.getCamera();
 				cam.moveCamera(Camera.CAMERA_MOVEOUT, 100);
@@ -430,17 +441,10 @@ public class Obj3DView extends Activity {
 			mm1.positionGenerate(root);
 
 			addAllNodes(root, null);
-			
-			
-						
-			
-			
 		}
-		
-		private void createNewNode(MMElement ele,String name){
 
-			
-			
+		private void createNewNode(MMElement ele, String name) {
+
 		}
 
 		public Object3D drawSphere(double x, double y, double z, int radious,
@@ -448,106 +452,99 @@ public class Obj3DView extends Activity {
 			Object3D cube1 = Primitives.getSphere(radious);
 			cube1.strip();
 			cube1.build();
-			
-			
-			
+
 			cube1.setOrigin(new SimpleVector(x, y, z));
 			cube1.setAdditionalColor(color);
 			world.addObject(cube1);
 			return cube1;
 		}
 
-		public void addAllNodes(MMElement e1,Node parent){
-			
-			Node n1=addNewNode(e1,parent);
-			
-			for(MMElement c1:e1.getChildren()){
-				addAllNodes(c1,n1);
+		public void addAllNodes(MMElement e1, Node parent) {
+
+			Node n1 = addNewNode(e1, parent);
+
+			for (MMElement c1 : e1.getChildren()) {
+				addAllNodes(c1, n1);
 			}
 		}
-		
-		private Node addNewNode(MMElement e1,Node parent){
-			
-			if(parent==null){
-				rootNode=new Node(black);
-				rootNode.setOrigin(new SimpleVector(0,0,0));
+
+		private Node addNewNode(MMElement e1, Node parent) {
+
+			if (parent == null) {
+				rootNode = new Node(black);
+				rootNode.setOrigin(new SimpleVector(0, 0, 0));
 				rootNode.setMmElement(e1);
-//				rootNode.setAdditionalColor(black);
+				// rootNode.setAdditionalColor(black);
 				rootNode.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
 				rootNode.strip();
 				rootNode.build();
 				world.addObject(rootNode);
 				return rootNode;
-			} else{
-				Node n1=new Node(parent);
-				//Log.v("coords",e1.getPosition().getX()+","+e1.getPosition().getZ()+","+e1.getPosition().getY());
-				//Log.v("e1x null?", e1==null ? "null" : "not null");
-				n1.setOrigin(new SimpleVector((float) e1.getPosition().getX(), (float) e1.getPosition().getY(),(float) e1.getPosition().getZ()));
+			} else {
+				Node n1 = new Node(parent);
+				// Log.v("coords",e1.getPosition().getX()+","+e1.getPosition().getZ()+","+e1.getPosition().getY());
+				// Log.v("e1x null?", e1==null ? "null" : "not null");
+				n1.setOrigin(new SimpleVector((float) e1.getPosition().getX(),
+						(float) e1.getPosition().getY(), (float) e1
+								.getPosition().getZ()));
 				n1.setMmElement(e1);
-				//n1.setAdditionalColor(red);
-//				n1.setAdditionalColor(new RGBColor((int) Math.random()*255,(int) Math.random()*255,(int) Math.random()*255));
+				// n1.setAdditionalColor(new RGBColor((int)
+				// Math.random()*255,(int) Math.random()*255,(int)
+				// Math.random()*255));
 				n1.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
 				n1.strip();
-				n1.build();
+				//n1.build();
 				world.addObject(n1);
-//				n1.position().setAll((float) e1.getPosition().getX(), (float) e1.getPosition().getZ(),(float) e1.getPosition().getY());
+				// n1.position().setAll((float) e1.getPosition().getX(), (float)
+				// e1.getPosition().getZ(),(float) e1.getPosition().getY());
 				n1.buildParentLink();
 				world.addObject(n1.getParentLink());
-//				scene.addChild(n1);
-//				scene.addChild(n1.getParentLink());
+				// scene.addChild(n1);
+				// scene.addChild(n1.getParentLink());
 				return n1;
 			}
-			
-			
-		}		
+
+		}
 
 		public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-			
+
 		}
 
 		public void onDrawFrame(GL10 gl) {
 
-			
-//			if(touchedNode!=null){
-//				fb.dispose();
-//				working=1;
-//				world.removeAllObjects();
-//				MemoryHelper.compact();
-//				Node x=touchedNode;
-//				touchedNode=null;
-//				MMElement n1 = new MMElement();
-//				n1.setName("generated");
-//				m1.addElement(x.getMmElement(), root);
-//				addAllNodes(root,null);
-//				working=0;
-//			}
-			
 			fb.clear(back);
 			world.renderScene(fb);
 			world.draw(fb);
-			
-			//fonts
-			GLFont glFont;
-			Paint paint = new Paint();
-			paint.setAntiAlias(true);
-			paint.setTypeface(Typeface.create((String)null, Typeface.BOLD));
-			
-			paint.setTextSize(16);
-			glFont = new GLFont(paint);
-			
-			paint.setTextSize(50);
 
-			glFont.blitString(fb, "HI",	5, 15, 10, RGBColor.WHITE);
-			glFont.blitString(fb, "HI",	15, 15, 10, RGBColor.WHITE);
-			
+			// fonts
+			// GLFont glFont;
+			// Paint paint = new Paint();
+			// paint.setAntiAlias(true);
+			// paint.setTypeface(Typeface.create((String)null,
+			// Typeface.BOLD));
+
+			// paint.setTextSize(16);
+			// glFont = new GLFont(paint);
+
+			// paint.setTextSize(50);
+
+			// glFont.blitString(fb, "HI", 5, 15, 10, RGBColor.WHITE);
+			// glFont.blitString(fb, "HI", 15, 15, 10, RGBColor.WHITE);
 			fb.display();
+			try {
+				Thread.sleep(30);
+			} catch (Exception e) {
+				// No need for this...
+			}
 
 			if (System.currentTimeMillis() - time >= 1000) {
 				Logger.log(fps + "fps");
 				fps = 0;
 				time = System.currentTimeMillis();
 			}
+
 			fps++;
+
 		}
 	}
 }
