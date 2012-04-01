@@ -11,6 +11,7 @@ import javax.microedition.khronos.opengles.GL10;
 import lk.ac.ce.mm3d.Math.MindMath;
 import lk.ac.pdn.ce.mm3d.DataStructure.MMElement;
 import lk.ac.pdn.ce.mm3d.DataStructure.MapData;
+import lk.ac.pdn.ce.mm3d.DataStructure.Position;
 
 import android.app.Activity;
 import android.content.res.Resources;
@@ -36,6 +37,7 @@ import com.threed.jpct.TextureManager;
 import com.threed.jpct.World;
 import com.threed.jpct.util.BitmapHelper;
 import com.threed.jpct.util.MemoryHelper;
+import com.threed.jpct.Config;
 
 public class Obj3DView extends Activity {
 
@@ -69,7 +71,6 @@ public class Obj3DView extends Activity {
 	private MindMath mm1;
 	private MMElement root;
 	private Node touchedNode = null;
-	private int working = 0;
 
 	// Basic colors
 	RGBColor black = new RGBColor(0, 0, 0, 255);
@@ -139,27 +140,35 @@ public class Obj3DView extends Activity {
 	public boolean onTouchEvent(MotionEvent event) {
 
 		SimpleVector dir = Interact2D.reproject2D3DWS(cam, fb,
-				(int) event.getX(), (int) event.getY()).normalize();
+				(int) event.getX(), (int) event.getY()-130).normalize();
 		Object[] res = world.calcMinDistanceAndObject3D(cam.getPosition(), dir,
-				10000);
+				99999);
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-
+//			Log.v("normal click", "x is:"+event.getX()+", y is:"+event.getY());
 			for (Object ob : res) {
-				// if(ob!=null && (ob instanceof Node)){
-				// Log.v("object", ob.getClass().toString());
-				// touchedNode=(Node) ob;
-				// // world.removeAllObjects();
-				//
-				// MMElement n1 = new MMElement();
-				// n1.setName("generated");
-				// m1.addElement(touchedNode.getMmElement(), root);
-				//
-				// mm1 = new MindMath(10);
-				// mm1.positionGenerate(root);
-				//
-				// renderer.addAllNodes(root, null);
-				// }
+				 if(ob!=null && (ob instanceof Node)){
+					 Log.v("object", ob.getClass().toString());
+					 touchedNode=(Node) ob;
+					 world.removeAllObjects();
+					 
+					 Position temp1=touchedNode.getMmElement().getPosition();
+					 Position temp2=root.getPosition();
+					 MMElement n1 = new MMElement();
+					 n1.setName("generated");
+					 root=m1.getRoot();
+					 if((temp1.getX()==temp2.getX())&&(temp1.getY()==temp2.getY())&&(temp1.getZ()==temp2.getZ())){
+						 m1.addElement(n1, root);
+					 } else {
+						 m1.addElement(n1,touchedNode.getMmElement());
+					 }
+//					 root=m1.getRoot();
+					 
+					 mm1 = new MindMath(15);
+					 mm1.positionGenerate(root);
+					
+					 renderer.addAllNodes(root, null);
+				 }
 			}
 
 			prevSwipeX = event.getX();
@@ -277,7 +286,7 @@ public class Obj3DView extends Activity {
 			fb = new FrameBuffer(gl, w, h);
 
 			if (master == null) {
-
+				Config.glDebugLevel=0;
 				world = new World();
 				world.setAmbientLight(20, 20, 20);
 
@@ -356,9 +365,9 @@ public class Obj3DView extends Activity {
 			n61.setName("n61");
 			m1.addElement(n61, n6);
 
-			MMElement n62 = new MMElement();
-			n62.setName("n62");
-			m1.addElement(n62, n6);
+//			MMElement n62 = new MMElement();
+//			n62.setName("n62");
+//			m1.addElement(n62, n5);
 			// **************************************************************
 
 			// ******************* child group 2****************************
@@ -391,28 +400,28 @@ public class Obj3DView extends Activity {
 
 			MMElement n321 = new MMElement();
 			n321.setName("n321");
-			m1.addElement(n321, n62);
-
-			MMElement n322 = new MMElement();
-			n322.setName("n322");
-			m1.addElement(n322, n62);
-
-			MMElement n323 = new MMElement();
-			n323.setName("n323");
-			m1.addElement(n323, n62);
-
-			// ***********************************************
-
-			// *********************** child group 4
-			// ******************************
-
-			MMElement n111 = new MMElement();
-			n111.setName("n111");
-			m1.addElement(n111, n62);
-
-			MMElement n112 = new MMElement();
-			n112.setName("n112");
-			m1.addElement(n112, n62);
+//			m1.addElement(n321, n62);
+//
+//			MMElement n322 = new MMElement();
+//			n322.setName("n322");
+//			m1.addElement(n322, n62);
+//
+//			MMElement n323 = new MMElement();
+//			n323.setName("n323");
+//			m1.addElement(n323, n62);
+//
+//			// ***********************************************
+//
+//			// *********************** child group 4
+//			// ******************************
+//
+//			MMElement n111 = new MMElement();
+//			n111.setName("n111");
+//			m1.addElement(n111, n62);
+//
+//			MMElement n112 = new MMElement();
+//			n112.setName("n112");
+//			m1.addElement(n112, n62);
 			// **************************************************************************
 
 			// **************** child group 5**************
@@ -437,7 +446,7 @@ public class Obj3DView extends Activity {
 			n22.setName("n22");
 			m1.addElement(n22, n2);
 
-			mm1 = new MindMath(10);
+			mm1 = new MindMath(15);
 			mm1.positionGenerate(root);
 
 			addAllNodes(root, null);
@@ -511,11 +520,15 @@ public class Obj3DView extends Activity {
 		}
 
 		public void onDrawFrame(GL10 gl) {
-
+			fb.freeMemory();
 			fb.clear(back);
-			world.renderScene(fb);
-			world.draw(fb);
-
+			try{
+				world.renderScene(fb);
+			
+				world.draw(fb);
+			} catch (Exception e){
+				Log.v("working", "new node adding still in process");
+			}
 			// fonts
 			// GLFont glFont;
 			// Paint paint = new Paint();

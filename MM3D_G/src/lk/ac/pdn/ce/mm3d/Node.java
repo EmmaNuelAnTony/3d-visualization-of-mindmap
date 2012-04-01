@@ -80,12 +80,6 @@ public class Node extends Object3D{
 		parentx=parentOrigin.x;
 		parenty=parentOrigin.y;
 		parentz=parentOrigin.z;
-//		thisx=this.position().x;
-//		thisy=this.position().y;
-//		thisz=this.position().z;
-//		parentx=parent.position().x;
-//		parenty=parent.position().y;
-//		parentz=parent.position().z;
 		
 		// calculating the distance of the link
 		float d=(float) Math.sqrt(((Math.pow(thisx-parentx, 2))+
@@ -95,26 +89,21 @@ public class Node extends Object3D{
 		
 		/* following rotation should be done prior to the position change because
 		 * rotation is calculated with respect to the origin
-		 */
+//		 */
 		float ry,rz,rx;	//rotation amount, in degrees
 		ry=getAngle(parentx-thisx,parentz-thisz);
 		rz=getAngle(parentx-thisx,parenty-thisy);
 		rx=getAngle(parentz-thisz,parenty-thisy);
 		
-//		Log.v("position", thisx+","+thisy+","+thisz);
-//		Log.v("position", thisx+","+thisy+","+thisz+","+parentx+","+parenty+","+parentz);
-//		Log.v("angle", rx+","+ry+","+rz);
-//		Log.v("z angle",","+rx);
+		Log.v("position", thisx+","+thisy+","+thisz);
+		Log.v("position", thisx+","+thisy+","+thisz+","+parentx+","+parenty+","+parentz);
+		Log.v("angle", rx+","+ry+","+rz);
+		Log.v("z angle",","+rx);
 		
 		parentLink=new Link(d);
-		parentLink.rotateX(-rx);
+		parentLink.rotateX(-rx*1.1f);
 //		parentLink.rotateY(ry);
-		parentLink.rotateZ(rz*1.8f);
-//		parentLink.rotation().setAll(-rx, ry, 0f);
-//		parentLink.rotation().add(new Number3d(45,45,45));
-//		parentLink.rotation().x+=-rx;
-//		parentLink.rotation().y+=ry;
-//		parentLink.rotation().z-=rz;
+		parentLink.rotateZ(rz*1.85f);
 
 
 		
@@ -124,7 +113,6 @@ public class Node extends Object3D{
 		z=(thisz+parentz)/2f;
 		
 		parentLink.setOrigin(new SimpleVector(x,y,z));
-//		parentLink.position().setAll(x,y,z);
 
 	}
 	
