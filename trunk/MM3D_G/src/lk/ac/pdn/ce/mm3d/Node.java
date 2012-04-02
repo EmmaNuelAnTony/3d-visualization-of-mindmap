@@ -27,19 +27,14 @@ public class Node extends Object3D{
 		this.setAdditionalColor(color);
 		parent=p;
 		level=parent.getLevel();
-//		buildParentLink();
 	}
 	
 	public Node(Node p){
-
-//		super(0.5f,40,40,
-//				p.getLevel()>0 ? new Color4((p.colors().getPropertyR(0)+150) % 255,(p.colors().getPropertyB(0)+200) % 255,(p.colors().getPropertyG(0)+200) % 255,255): new Color4((float) (Math.random() * 255),(float) (Math.random() * 255),(float) (Math.random() * 255),255));
 		super(Primitives.getSphere(4));
 		this.setAdditionalColor(new RGBColor((int) (Math.random()*255),(int) (Math.random()*255),(int) (Math.random()*255)));
 		
 		parent=p;
 		level=parent.getLevel()+1;
-//		buildParentLink();
 	}
 	
 	
@@ -72,14 +67,6 @@ public class Node extends Object3D{
 		}
 		
 		float thisx,thisy,thisz,parentx,parenty,parentz;
-//		SimpleVector origin=this.getOrigin();
-//		thisx=origin.x;
-//		thisy=origin.y;
-//		thisz=origin.z;
-//		SimpleVector parentOrigin=parent.getOrigin();
-//		parentx=parentOrigin.x;
-//		parenty=parentOrigin.y;
-//		parentz=parentOrigin.z;
 		thisx=(float) mmElement.getPosition().getX();
 		thisy=(float) mmElement.getPosition().getY();
 		thisz=(float) mmElement.getPosition().getZ();

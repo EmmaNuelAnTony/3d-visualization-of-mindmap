@@ -56,8 +56,6 @@ public class Obj3DView extends Activity {
 	private float xpos = -1;
 	private float ypos = -1;
 
-	private Object3D cube = null;
-	private int fps = 0;
 	private Camera cam;
 	private Light sun = null;
 
@@ -145,7 +143,6 @@ public class Obj3DView extends Activity {
 				99999);
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//			Log.v("normal click", "x is:"+event.getX()+", y is:"+event.getY());
 			for (Object ob : res) {
 				 if(ob!=null && (ob instanceof Node)){
 					 Log.v("object", ob.getClass().toString());
@@ -162,11 +159,7 @@ public class Obj3DView extends Activity {
 					 } else {
 						 m1.addElement(n1,touchedNode.getMmElement());
 					 }
-//					 root=m1.getRoot();
-					 
-					 //mm1 = new MindMath(25);
 					 mm1.positionGenerate(root);
-					
 					 renderer.addAllNodes(root, null);
 				 }
 			}
@@ -180,29 +173,18 @@ public class Obj3DView extends Activity {
 		if (event.getAction() == MotionEvent.ACTION_UP) {
 			actionTime = System.currentTimeMillis() - downTime;
 
-			// drawSphere(-40, 50, 90, 10, new RGBColor(0, 255, 0));
 			if (actionTime < 3000) {
-				// createNewNode(m1.getRoot(),"testnew");
+
 			}
 			return true;
 		}
 
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			// float xd = me.getX() - xpos;
-			// float yd = me.getY() - ypos;
-			//
-			// xpos = me.getX();
-			// ypos = me.getY();
-			//
-			// touchTurn = xd / -100f;
-			// touchTurnUp = yd / -100f;
-			// /////////////////////////////////////////////////////
 
 			swipeX = event.getX();
 			swipeY = event.getY();
 			float a = swipeY - prevSwipeY;
 			float b = swipeX - prevSwipeX;
-			// Log.v("out"," "+swipeX+","+swipeY);
 
 			actionTime = System.currentTimeMillis() - downTime;
 
@@ -212,20 +194,11 @@ public class Obj3DView extends Activity {
 				if ((swipeX - prevSwipeX) > 5 || (swipeY - prevSwipeY) > 5) {
 					cam.setPosition(campos.x - (swipeX - prevSwipeX) / 40,
 							campos.y + (swipeY - prevSwipeY) / 400, campos.z);
-
-					// scene.camera().position.x-=(swipeX-prevSwipeX)/40;
-					// scene.camera().target.x-=(swipeX-prevSwipeX)/40;
-					//
-					//
-					// scene.camera().position.y+=(swipeY-prevSwipeY)/400;
-					// scene.camera().target.y+=(swipeY-prevSwipeY)/400;
 					downTime = System.currentTimeMillis();
 				}
 			} else { // touch and hold for 3sec and then move, rotate the camera
 				cam.setPosition(campos.x - (swipeX - prevSwipeX), campos.y
 						+ (swipeY - prevSwipeY), campos.z);
-				// scene.camera().position.x-=(swipeX-prevSwipeX);
-				// scene.camera().position.y+=(swipeY-prevSwipeY);
 			}
 			cam.lookAt(rootNode.getOrigin());
 			prevSwipeX = swipeX;
@@ -293,36 +266,19 @@ public class Obj3DView extends Activity {
 				sun = new Light(world);
 				sun.setIntensity(250, 250, 250);
 
-				cube = Primitives.getSphere(1);
-
-				// Texture texture = new Texture(BitmapHelper.rescale(
-				// BitmapHelper.convert(getResources().getDrawable(
-				// R.drawable.icon)), 64, 64));
-				// TextureManager.getInstance().addTexture("texture", texture);
-				// cube.calcTextureWrapSpherical();
-				// cube.setTexture("texture");
-				cube.strip();
-				cube.build();
-
-				// world.addObject(cube);
-
-				// Object3D ob1 = drawSphere(10, 20, 30, 10, new RGBColor(255,
-				// 0,
-				// 0));
-				//
-				// drawSphere(-40, 50, 90, 10, new RGBColor(0, 255, 0));
-				// drawSphere(-40, -50, 200, 10, new RGBColor(0, 0, 255));
-
 				cam = world.getCamera();
 				cam.moveCamera(Camera.CAMERA_MOVEOUT, 200);
-				cam.lookAt(cube.getTransformedCenter());
+				cam.lookAt(new SimpleVector(0,0,0));
 
 				SimpleVector sv1 = new SimpleVector();
-				sv1.set(cube.getTransformedCenter());
+				sv1.set(new SimpleVector(0,0,0));
 				sv1.y -= 100;
 				sv1.z -= 100;
 				sun.setPosition(sv1);
+				
+				//Loding mindmap goes here
 				test();
+				//finished loading
 				MemoryHelper.compact();
 
 				if (master == null) {
@@ -372,9 +328,7 @@ public class Obj3DView extends Activity {
 			n61.setName("n61");
 			m1.addElement(n61, n6);
 
-//			MMElement n62 = new MMElement();
-//			n62.setName("n62");
-//			m1.addElement(n62, n5);
+			
 			// **************************************************************
 
 			// ******************* child group 2****************************
@@ -405,31 +359,7 @@ public class Obj3DView extends Activity {
 			n313.setName("n313");
 			m1.addElement(n313, n61);
 
-			MMElement n321 = new MMElement();
-			n321.setName("n321");
-//			m1.addElement(n321, n62);
-//
-//			MMElement n322 = new MMElement();
-//			n322.setName("n322");
-//			m1.addElement(n322, n62);
-//
-//			MMElement n323 = new MMElement();
-//			n323.setName("n323");
-//			m1.addElement(n323, n62);
-//
-//			// ***********************************************
-//
-//			// *********************** child group 4
-//			// ******************************
-//
-//			MMElement n111 = new MMElement();
-//			n111.setName("n111");
-//			m1.addElement(n111, n62);
-//
-//			MMElement n112 = new MMElement();
-//			n112.setName("n112");
-//			m1.addElement(n112, n62);
-			// **************************************************************************
+
 
 			// **************** child group 5**************
 
@@ -459,21 +389,6 @@ public class Obj3DView extends Activity {
 			addAllNodes(root, null);
 		}
 
-		private void createNewNode(MMElement ele, String name) {
-
-		}
-
-		public Object3D drawSphere(double x, double y, double z, int radious,
-				RGBColor color) {
-			Object3D cube1 = Primitives.getSphere(radious);
-			cube1.strip();
-			cube1.build();
-
-			cube1.setOrigin(new SimpleVector(x, y, z));
-			cube1.setAdditionalColor(color);
-			world.addObject(cube1);
-			return cube1;
-		}
 
 		public void addAllNodes(MMElement e1, Node parent) {
 
@@ -490,7 +405,6 @@ public class Obj3DView extends Activity {
 				rootNode = new Node(black);
 				rootNode.setOrigin(new SimpleVector(0, 0, 0));
 				rootNode.setMmElement(e1);
-				// rootNode.setAdditionalColor(black);
 				rootNode.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
 				rootNode.strip();
 				rootNode.build();
@@ -498,25 +412,15 @@ public class Obj3DView extends Activity {
 				return rootNode;
 			} else {
 				Node n1 = new Node(parent);
-				// Log.v("coords",e1.getPosition().getX()+","+e1.getPosition().getZ()+","+e1.getPosition().getY());
-				// Log.v("e1x null?", e1==null ? "null" : "not null");
 				n1.setOrigin(new SimpleVector((float) e1.getPosition().getX(),
 						(float) e1.getPosition().getY(), (float) e1
 								.getPosition().getZ()));
 				n1.setMmElement(e1);
-				// n1.setAdditionalColor(new RGBColor((int)
-				// Math.random()*255,(int) Math.random()*255,(int)
-				// Math.random()*255));
 				n1.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
 				n1.strip();
-				//n1.build();
 				world.addObject(n1);
-				// n1.position().setAll((float) e1.getPosition().getX(), (float)
-				// e1.getPosition().getZ(),(float) e1.getPosition().getY());
 				n1.buildParentLink();
 				world.addObject(n1.getParentLink());
-				// scene.addChild(n1);
-				// scene.addChild(n1.getParentLink());
 				return n1;
 			}
 
@@ -556,14 +460,6 @@ public class Obj3DView extends Activity {
 			} catch (Exception e) {
 				// No need for this...
 			}
-
-//			if (System.currentTimeMillis() - time >= 1000) {
-//				Logger.log(fps + "fps");
-//				fps = 0;
-//				time = System.currentTimeMillis();
-//			}
-
-	//		fps++;
 
 		}
 	}
