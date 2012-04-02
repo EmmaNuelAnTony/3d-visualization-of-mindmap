@@ -140,7 +140,7 @@ public class Obj3DView extends Activity {
 	public boolean onTouchEvent(MotionEvent event) {
 
 		SimpleVector dir = Interact2D.reproject2D3DWS(cam, fb,
-				(int) event.getX(), (int) event.getY()-130).normalize();
+				(int) event.getX(), (int) event.getY()-60).normalize();
 		Object[] res = world.calcMinDistanceAndObject3D(cam.getPosition(), dir,
 				99999);
 
@@ -164,7 +164,7 @@ public class Obj3DView extends Activity {
 					 }
 //					 root=m1.getRoot();
 					 
-					 mm1 = new MindMath(15);
+					 //mm1 = new MindMath(25);
 					 mm1.positionGenerate(root);
 					
 					 renderer.addAllNodes(root, null);
@@ -207,7 +207,7 @@ public class Obj3DView extends Activity {
 			actionTime = System.currentTimeMillis() - downTime;
 
 			SimpleVector campos = cam.getPosition();
-			if (actionTime < 3000) { // touch and move, move the camera
+			if (actionTime < 1000) { // touch and move, move the camera
 
 				if ((swipeX - prevSwipeX) > 5 || (swipeY - prevSwipeY) > 5) {
 					cam.setPosition(campos.x - (swipeX - prevSwipeX) / 40,
@@ -314,7 +314,7 @@ public class Obj3DView extends Activity {
 				// drawSphere(-40, -50, 200, 10, new RGBColor(0, 0, 255));
 
 				cam = world.getCamera();
-				cam.moveCamera(Camera.CAMERA_MOVEOUT, 100);
+				cam.moveCamera(Camera.CAMERA_MOVEOUT, 200);
 				cam.lookAt(cube.getTransformedCenter());
 
 				SimpleVector sv1 = new SimpleVector();
@@ -359,7 +359,14 @@ public class Obj3DView extends Activity {
 			MMElement n6 = new MMElement();
 			n6.setName("n6");
 			m1.addElement(n6, root);
-
+			
+			MMElement n7 = new MMElement();
+			n7.setName("n7");
+			m1.addElement(n7, root);
+			
+			MMElement n8 = new MMElement();
+			n8.setName("n8");
+			m1.addElement(n8, root);
 			// ******************** child group 1***************************
 			MMElement n61 = new MMElement();
 			n61.setName("n61");
@@ -446,7 +453,7 @@ public class Obj3DView extends Activity {
 			n22.setName("n22");
 			m1.addElement(n22, n2);
 
-			mm1 = new MindMath(15);
+			mm1 = new MindMath(25);
 			mm1.positionGenerate(root);
 
 			addAllNodes(root, null);
@@ -550,13 +557,13 @@ public class Obj3DView extends Activity {
 				// No need for this...
 			}
 
-			if (System.currentTimeMillis() - time >= 1000) {
-				Logger.log(fps + "fps");
-				fps = 0;
-				time = System.currentTimeMillis();
-			}
+//			if (System.currentTimeMillis() - time >= 1000) {
+//				Logger.log(fps + "fps");
+//				fps = 0;
+//				time = System.currentTimeMillis();
+//			}
 
-			fps++;
+	//		fps++;
 
 		}
 	}
