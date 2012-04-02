@@ -17,13 +17,13 @@ public class Node extends Object3D{
 	
 	
 	public Node(RGBColor color){			// no parent means root node
-		super(Primitives.getSphere(3));
+		super(Primitives.getSphere(5));
 		this.setAdditionalColor(color);
 		level=0;
 	}
 	
 	public Node(Node p,RGBColor color){
-		super(Primitives.getSphere(2));
+		super(Primitives.getSphere(4));
 		this.setAdditionalColor(color);
 		parent=p;
 		level=parent.getLevel();
@@ -34,7 +34,7 @@ public class Node extends Object3D{
 
 //		super(0.5f,40,40,
 //				p.getLevel()>0 ? new Color4((p.colors().getPropertyR(0)+150) % 255,(p.colors().getPropertyB(0)+200) % 255,(p.colors().getPropertyG(0)+200) % 255,255): new Color4((float) (Math.random() * 255),(float) (Math.random() * 255),(float) (Math.random() * 255),255));
-		super(Primitives.getSphere(2));
+		super(Primitives.getSphere(4));
 		this.setAdditionalColor(new RGBColor((int) (Math.random()*255),(int) (Math.random()*255),(int) (Math.random()*255)));
 		
 		parent=p;
@@ -72,14 +72,20 @@ public class Node extends Object3D{
 		}
 		
 		float thisx,thisy,thisz,parentx,parenty,parentz;
-		SimpleVector origin=this.getOrigin();
-		thisx=origin.x;
-		thisy=origin.y;
-		thisz=origin.z;
-		SimpleVector parentOrigin=parent.getOrigin();
-		parentx=parentOrigin.x;
-		parenty=parentOrigin.y;
-		parentz=parentOrigin.z;
+//		SimpleVector origin=this.getOrigin();
+//		thisx=origin.x;
+//		thisy=origin.y;
+//		thisz=origin.z;
+//		SimpleVector parentOrigin=parent.getOrigin();
+//		parentx=parentOrigin.x;
+//		parenty=parentOrigin.y;
+//		parentz=parentOrigin.z;
+		thisx=(float) mmElement.getPosition().getX();
+		thisy=(float) mmElement.getPosition().getY();
+		thisz=(float) mmElement.getPosition().getZ();
+		parentx=(float) mmElement.getParent().getPosition().getX();
+		parenty=(float) mmElement.getParent().getPosition().getY();
+		parentz=(float) mmElement.getParent().getPosition().getZ();
 		
 		// calculating the distance of the link
 		float d=(float) Math.sqrt(((Math.pow(thisx-parentx, 2))+
@@ -100,10 +106,11 @@ public class Node extends Object3D{
 		Log.v("angle", rx+","+ry+","+rz);
 		Log.v("z angle",","+rx);
 		
+		
 		parentLink=new Link(d);
-		parentLink.rotateX(-rx*1.1f);
-//		parentLink.rotateY(ry);
-		parentLink.rotateZ(rz*1.85f);
+		parentLink.rotateX(-rx*0.6f);
+//		parentLink.rotateZ(rz);
+		parentLink.rotateZ(rz);
 
 
 		
@@ -121,12 +128,12 @@ public class Node extends Object3D{
 			if(x==0){
 				return 0;
 			} else if (x>0){
-				return 90;
+				return (float)Math.PI/2;
 			} else if (x<0){
-				return -90;
+				return -(float)Math.PI/2;
 			}
 		}
-		return (float) ((float) Math.atan((x)/(y))/Math.PI/2*360);
+		return (float) Math.toRadians((float) Math.atan((x)/(y))/Math.PI/2*360);
 	}
 	
 
