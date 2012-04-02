@@ -288,7 +288,7 @@ public class Obj3DView extends Activity {
 			}
 		}
 
-		public void test() {
+		private void test() {
 			m1 = new MapData("test map");
 			root = m1.getRoot();
 

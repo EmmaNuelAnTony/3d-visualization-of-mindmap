@@ -82,6 +82,8 @@ public class MindMath {
 				currentAngleV=currentAngleV+2*devideAngle;
 			}
 		}
+		
+		
 	}
-	
+
 }
