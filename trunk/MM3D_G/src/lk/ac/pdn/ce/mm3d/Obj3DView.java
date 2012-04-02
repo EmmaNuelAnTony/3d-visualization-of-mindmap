@@ -138,30 +138,32 @@ public class Obj3DView extends Activity {
 	public boolean onTouchEvent(MotionEvent event) {
 
 		SimpleVector dir = Interact2D.reproject2D3DWS(cam, fb,
-				(int) event.getX(), (int) event.getY()-60).normalize();
+				(int) event.getX(), (int) event.getY() - 60).normalize();
 		Object[] res = world.calcMinDistanceAndObject3D(cam.getPosition(), dir,
 				99999);
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			for (Object ob : res) {
-				 if(ob!=null && (ob instanceof Node)){
-					 Log.v("object", ob.getClass().toString());
-					 touchedNode=(Node) ob;
-					 world.removeAllObjects();
-					 
-					 Position temp1=touchedNode.getMmElement().getPosition();
-					 Position temp2=root.getPosition();
-					 MMElement n1 = new MMElement();
-					 n1.setName("generated");
-					 root=m1.getRoot();
-					 if((temp1.getX()==temp2.getX())&&(temp1.getY()==temp2.getY())&&(temp1.getZ()==temp2.getZ())){
-						 m1.addElement(n1, root);
-					 } else {
-						 m1.addElement(n1,touchedNode.getMmElement());
-					 }
-					 mm1.positionGenerate(root);
-					 renderer.addAllNodes(root, null);
-				 }
+				if (ob != null && (ob instanceof Node)) {
+					Log.v("object", ob.getClass().toString());
+					touchedNode = (Node) ob;
+					world.removeAllObjects();
+
+					Position temp1 = touchedNode.getMmElement().getPosition();
+					Position temp2 = root.getPosition();
+					MMElement n1 = new MMElement();
+					n1.setName("generated");
+					root = m1.getRoot();
+					if ((temp1.getX() == temp2.getX())
+							&& (temp1.getY() == temp2.getY())
+							&& (temp1.getZ() == temp2.getZ())) {
+						m1.addElement(n1, root);
+					} else {
+						m1.addElement(n1, touchedNode.getMmElement());
+					}
+					mm1.positionGenerate(root);
+					renderer.addAllNodes(root, null);
+				}
 			}
 
 			prevSwipeX = event.getX();
@@ -218,18 +220,6 @@ public class Obj3DView extends Activity {
 		return true;
 	}
 
-	public Object3D drawSphere(double x, double y, double z, int radious,
-			RGBColor color) {
-		Object3D cube1 = Primitives.getSphere(radious);
-		cube1.strip();
-		cube1.build();
-
-		cube1.setOrigin(new SimpleVector(x, y, z));
-		cube1.setAdditionalColor(color);
-		world.addObject(cube1);
-		return cube1;
-	}
-
 	class MyRenderer implements GLSurfaceView.Renderer {
 
 		private boolean stop = false;
@@ -259,7 +249,7 @@ public class Obj3DView extends Activity {
 			fb = new FrameBuffer(gl, w, h);
 
 			if (master == null) {
-				Config.glDebugLevel=0;
+				Config.glDebugLevel = 0;
 				world = new World();
 				world.setAmbientLight(20, 20, 20);
 
@@ -268,17 +258,17 @@ public class Obj3DView extends Activity {
 
 				cam = world.getCamera();
 				cam.moveCamera(Camera.CAMERA_MOVEOUT, 200);
-				cam.lookAt(new SimpleVector(0,0,0));
+				cam.lookAt(new SimpleVector(0, 0, 0));
 
 				SimpleVector sv1 = new SimpleVector();
-				sv1.set(new SimpleVector(0,0,0));
+				sv1.set(new SimpleVector(0, 0, 0));
 				sv1.y -= 100;
 				sv1.z -= 100;
 				sun.setPosition(sv1);
-				
-				//Loding mindmap goes here
+
+				// Loding mindmap goes here
 				test();
-				//finished loading
+				// finished loading
 				MemoryHelper.compact();
 
 				if (master == null) {
@@ -315,11 +305,11 @@ public class Obj3DView extends Activity {
 			MMElement n6 = new MMElement();
 			n6.setName("n6");
 			m1.addElement(n6, root);
-			
+
 			MMElement n7 = new MMElement();
 			n7.setName("n7");
 			m1.addElement(n7, root);
-			
+
 			MMElement n8 = new MMElement();
 			n8.setName("n8");
 			m1.addElement(n8, root);
@@ -328,7 +318,6 @@ public class Obj3DView extends Activity {
 			n61.setName("n61");
 			m1.addElement(n61, n6);
 
-			
 			// **************************************************************
 
 			// ******************* child group 2****************************
@@ -359,8 +348,6 @@ public class Obj3DView extends Activity {
 			n313.setName("n313");
 			m1.addElement(n313, n61);
 
-
-
 			// **************** child group 5**************
 
 			MMElement n41 = new MMElement();
@@ -388,7 +375,6 @@ public class Obj3DView extends Activity {
 
 			addAllNodes(root, null);
 		}
-
 
 		public void addAllNodes(MMElement e1, Node parent) {
 
@@ -433,27 +419,16 @@ public class Obj3DView extends Activity {
 		public void onDrawFrame(GL10 gl) {
 			fb.freeMemory();
 			fb.clear(back);
-			try{
+			try {
 				world.renderScene(fb);
-			
+
 				world.draw(fb);
-			} catch (Exception e){
+			} catch (Exception e) {
 				Log.v("working", "new node adding still in process");
 			}
-			// fonts
-			// GLFont glFont;
-			// Paint paint = new Paint();
-			// paint.setAntiAlias(true);
-			// paint.setTypeface(Typeface.create((String)null,
-			// Typeface.BOLD));
+			// printing text will go here
+			displayCaptions();
 
-			// paint.setTextSize(16);
-			// glFont = new GLFont(paint);
-
-			// paint.setTextSize(50);
-
-			// glFont.blitString(fb, "HI", 5, 15, 10, RGBColor.WHITE);
-			// glFont.blitString(fb, "HI", 15, 15, 10, RGBColor.WHITE);
 			fb.display();
 			try {
 				Thread.sleep(30);
@@ -461,6 +436,31 @@ public class Obj3DView extends Activity {
 				// No need for this...
 			}
 
+		}
+
+		private void displayCaptions() {
+			// fonts
+			GLFont glFont;
+			Paint paint = new Paint();
+			//paint.setAntiAlias(true);
+			paint.setTypeface(Typeface.create((String) null, Typeface.BOLD));
+			paint.setTextSize(12);
+			glFont = new GLFont(paint);
+			paint.setTextSize(50);
+			addCaptionToANode(root,glFont);
+
+		}
+
+		private void addCaptionToANode(MMElement e1,GLFont glFont) {
+		
+			SimpleVector pos=new SimpleVector(e1.getPosition().getX(),e1.getPosition().getY(),e1.getPosition().getZ());
+			SimpleVector dir = Interact2D.project3D2D(cam, fb,pos);
+
+			glFont.blitString(fb, e1.getName(), (int) dir.x, (int) dir.y, (int) dir.z,
+					RGBColor.WHITE);
+			for (MMElement c1:e1.getChildren()){
+				addCaptionToANode(c1,glFont);
+			}
 		}
 	}
 }
