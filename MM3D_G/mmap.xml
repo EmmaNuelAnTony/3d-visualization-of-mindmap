@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="Globle Warming">
+	<node name="GH Effect">
+			<node name="GH Gasses">
+					<node name="Natural">
+					</node>
+					<node name="ManMade">
+					</node>
+			</node>
+			<node name="Radiation">
+					<node name="WaterAbsorb">
+					</node>
+					<node name="IceReflects">
+					</node>
+			</node>		
+	</node>
+	
+	<node name="IndustrialRevolution">
+		<node name="CO2">
+		</node>
+		<node name="Methane">
+		</node>
+		<node name="CFC">
+		</node>
+	</node>
+
+	<node name="GH Gasses">
+		<node name="CO2">
+		</node>
+		<node name="Methane">
+		</node>
+		<node name="CFC">
+		</node>
+	</node>
+
+	<node name="CO2">
+		<node name="1750">
+		</node>
+		<node name="Now">
+		</node>
+	</node>
+
+</node>
