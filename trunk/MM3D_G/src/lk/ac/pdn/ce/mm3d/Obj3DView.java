@@ -1,12 +1,25 @@
 package lk.ac.pdn.ce.mm3d;
 
 import glfont.*;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.opengles.GL10;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.xml.sax.SAXException;
 
 import lk.ac.ce.mm3d.Math.MindMath;
 import lk.ac.pdn.ce.mm3d.DataStructure.MMElement;
@@ -20,6 +33,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -374,6 +388,82 @@ public class Obj3DView extends Activity {
 			mm1.positionGenerate(root);
 
 			addAllNodes(root, null);
+			writeXML();
+			
+//			readXML();
+//			root = m1.getRoot();
+//			mm1= new MindMath(25);
+//			mm1.positionGenerate(root);
+//			
+//			addAllNodes(root,null);
+			
+		}
+
+		public void writeXML(){
+			try {
+				String xml=m1.getXML();
+				File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "mmap.xml");
+				FileOutputStream fOut = new FileOutputStream(file);
+		    	OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+		    	
+		    	osw.write(xml);
+		    	
+		    	osw.close();
+		    	osw.flush();
+		    	fOut.close();
+		    	fOut.close();
+			} catch (TransformerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		public void readXML(){
+			try{
+				 
+				   File f = new File(Environment.getExternalStorageDirectory()+"/mmap.xml");
+				 
+				   FileInputStream fileIS = new FileInputStream(f);
+				 
+				   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+				 
+				   String readString = new String();
+				   String xmlString = new String();
+				 
+				   //just reading each line and pass it on the debugger
+				 
+				   while((readString = buf.readLine())!= null){
+				 
+//				      Log.d("line: ", readString);
+					   xmlString+=readString;
+				 
+				   }
+				   
+//				   Log.v("xml read", "read : "+xmlString);
+				   m1.setXML(xmlString);
+				 
+				} catch (FileNotFoundException e) {
+				 
+				   e.printStackTrace();
+				 
+				} catch (IOException e){
+				 
+				   e.printStackTrace();
+				 
+				} catch (SAXException e){
+					
+				} catch (ParserConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				 
+				 
 		}
 
 		public void addAllNodes(MMElement e1, Node parent) {
@@ -431,7 +521,7 @@ public class Obj3DView extends Activity {
 
 			fb.display();
 			try {
-				Thread.sleep(30);
+				Thread.sleep(10);
 			} catch (Exception e) {
 				// No need for this...
 			}
@@ -456,7 +546,7 @@ public class Obj3DView extends Activity {
 			SimpleVector pos=new SimpleVector(e1.getPosition().getX(),e1.getPosition().getY(),e1.getPosition().getZ());
 			SimpleVector dir = Interact2D.project3D2D(cam, fb,pos);
 
-			glFont.blitString(fb, e1.getName(), (int) dir.x, (int) dir.y, (int) dir.z,
+			glFont.blitString(fb, e1.getName(), (int) dir.x, (int) dir.y, (int) dir.z+10,
 					RGBColor.WHITE);
 			for (MMElement c1:e1.getChildren()){
 				addCaptionToANode(c1,glFont);
