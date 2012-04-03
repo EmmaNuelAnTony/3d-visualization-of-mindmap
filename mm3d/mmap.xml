@@ -1,1 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?><node name="test map"><node name="n1"/><node name="n2"><node name="n21"/><node name="n22"/></node><node name="n3"><node name="n31"/><node name="n32"/></node><node name="n4"><node name="n41"/></node><node name="n5"><node name="n51"/><node name="n52"/><node name="n53"/></node><node name="n6"><node name="n61"><node name="n311"/><node name="n312"/><node name="n313"/></node><node name="n62"><node name="n321"/><node name="n322"/><node name="n323"/><node name="n111"/><node name="n112"/></node></node></node>
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="Globle Warming">
+	<node name="GH Effect">
+			<node name="GH Gasses">
+					<node name="Natural">
+					</node>
+					<node name="ManMade">
+					</node>
+			</node>
+			<node name="Radiation">
+					<node name="WaterAbsorb">
+					</node>
+					<node name="IceReflects">
+					</node>
+			</node>		
+	</node>
+	
+	<node name="IndustrialRevolution">
+		<node name="CO2">
+		</node>
+		<node name="Methane">
+		</node>
+		<node name="CFC">
+		</node>
+	</node>
+
+	<node name="GH Gasses">
+		<node name="CO2">
+		</node>
+		<node name="Methane">
+		</node>
+		<node name="CFC">
+		</node>
+	</node>
+
+	<node name="CO2">
+		<node name="1750">
+		</node>
+		<node name="Now">
+		</node>
+	</node>
+
+</node>

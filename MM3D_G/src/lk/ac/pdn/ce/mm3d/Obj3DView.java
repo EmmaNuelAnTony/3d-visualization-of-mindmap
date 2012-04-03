@@ -302,109 +302,107 @@ public class Obj3DView extends Activity {
 
 		private void test() {
 			m1 = new MapData("test map");
+//			root = m1.getRoot();
+//
+//			MMElement n1 = new MMElement();
+//			n1.setName("n1");
+//			m1.addElement(n1, root);
+//
+//			MMElement n2 = new MMElement();
+//			n2.setName("n2");
+//			m1.addElement(n2, root);
+//
+//			MMElement n3 = new MMElement();
+//			n3.setName("n3");
+//			m1.addElement(n3, root);
+//
+//			MMElement n4 = new MMElement();
+//			n4.setName("n4");
+//			m1.addElement(n4, root);
+//
+//			MMElement n5 = new MMElement();
+//			n5.setName("n5");
+//			m1.addElement(n5, root);
+//
+//			MMElement n6 = new MMElement();
+//			n6.setName("n6");
+//			m1.addElement(n6, root);
+//
+//			MMElement n7 = new MMElement();
+//			n7.setName("n7");
+//			m1.addElement(n7, root);
+//
+//			MMElement n8 = new MMElement();
+//			n8.setName("n8");
+//			m1.addElement(n8, root);
+//			// ******************** child group 1***************************
+//			MMElement n61 = new MMElement();
+//			n61.setName("n61");
+//			m1.addElement(n61, n6);
+//
+//			// **************************************************************
+//
+//			// ******************* child group 2****************************
+//
+//			MMElement n51 = new MMElement();
+//			n51.setName("n51");
+//			m1.addElement(n51, n5);
+//
+//			MMElement n52 = new MMElement();
+//			n52.setName("n52");
+//			m1.addElement(n52, n5);
+//
+//			MMElement n53 = new MMElement();
+//			n53.setName("n53");
+//			m1.addElement(n53, n5);
+//			// *******************************
+//
+//			// ******************** child group 3 ****************************
+//			MMElement n311 = new MMElement();
+//			n311.setName("n311");
+//			m1.addElement(n311, n61);
+//
+//			MMElement n312 = new MMElement();
+//			n312.setName("n312");
+//			m1.addElement(n312, n61);
+//
+//			MMElement n313 = new MMElement();
+//			n313.setName("n313");
+//			m1.addElement(n313, n61);
+//
+//			// **************** child group 5**************
+//
+//			MMElement n41 = new MMElement();
+//			n41.setName("n41");
+//			m1.addElement(n41, n4);
+//
+//			MMElement n31 = new MMElement();
+//			n31.setName("n31");
+//			m1.addElement(n31, n3);
+//
+//			MMElement n32 = new MMElement();
+//			n32.setName("n32");
+//			m1.addElement(n32, n3);
+//
+//			MMElement n21 = new MMElement();
+//			n21.setName("n21");
+//			m1.addElement(n21, n2);
+//
+//			MMElement n22 = new MMElement();
+//			n22.setName("n22");
+//			m1.addElement(n22, n2);
+//
+//			mm1 = new MindMath(25);
+//			mm1.positionGenerate(root);
+
+			//addAllNodes(root, null);
+			//writeXML();
+
+			readXML();
 			root = m1.getRoot();
-
-			MMElement n1 = new MMElement();
-			n1.setName("n1");
-			m1.addElement(n1, root);
-
-			MMElement n2 = new MMElement();
-			n2.setName("n2");
-			m1.addElement(n2, root);
-
-			MMElement n3 = new MMElement();
-			n3.setName("n3");
-			m1.addElement(n3, root);
-
-			MMElement n4 = new MMElement();
-			n4.setName("n4");
-			m1.addElement(n4, root);
-
-			MMElement n5 = new MMElement();
-			n5.setName("n5");
-			m1.addElement(n5, root);
-
-			MMElement n6 = new MMElement();
-			n6.setName("n6");
-			m1.addElement(n6, root);
-
-			MMElement n7 = new MMElement();
-			n7.setName("n7");
-			m1.addElement(n7, root);
-
-			MMElement n8 = new MMElement();
-			n8.setName("n8");
-			m1.addElement(n8, root);
-			// ******************** child group 1***************************
-			MMElement n61 = new MMElement();
-			n61.setName("n61");
-			m1.addElement(n61, n6);
-
-			// **************************************************************
-
-			// ******************* child group 2****************************
-
-			MMElement n51 = new MMElement();
-			n51.setName("n51");
-			m1.addElement(n51, n5);
-
-			MMElement n52 = new MMElement();
-			n52.setName("n52");
-			m1.addElement(n52, n5);
-
-			MMElement n53 = new MMElement();
-			n53.setName("n53");
-			m1.addElement(n53, n5);
-			// *******************************
-
-			// ******************** child group 3 ****************************
-			MMElement n311 = new MMElement();
-			n311.setName("n311");
-			m1.addElement(n311, n61);
-
-			MMElement n312 = new MMElement();
-			n312.setName("n312");
-			m1.addElement(n312, n61);
-
-			MMElement n313 = new MMElement();
-			n313.setName("n313");
-			m1.addElement(n313, n61);
-
-			// **************** child group 5**************
-
-			MMElement n41 = new MMElement();
-			n41.setName("n41");
-			m1.addElement(n41, n4);
-
-			MMElement n31 = new MMElement();
-			n31.setName("n31");
-			m1.addElement(n31, n3);
-
-			MMElement n32 = new MMElement();
-			n32.setName("n32");
-			m1.addElement(n32, n3);
-
-			MMElement n21 = new MMElement();
-			n21.setName("n21");
-			m1.addElement(n21, n2);
-
-			MMElement n22 = new MMElement();
-			n22.setName("n22");
-			m1.addElement(n22, n2);
-
-			mm1 = new MindMath(25);
+			mm1= new MindMath(35);
 			mm1.positionGenerate(root);
-
-			addAllNodes(root, null);
-			writeXML();
-
-			// readXML();
-			// root = m1.getRoot();
-			// mm1= new MindMath(25);
-			// mm1.positionGenerate(root);
-			//
-			// addAllNodes(root,null);
-
+			addAllNodes(root,null);
 		}
 
 		public void writeXML() {
@@ -451,7 +449,7 @@ public class Obj3DView extends Activity {
 
 				while ((readString = buf.readLine()) != null) {
 
-					// Log.d("line: ", readString);
+					//Log.d("line: ", readString);
 					xmlString += readString;
 
 				}

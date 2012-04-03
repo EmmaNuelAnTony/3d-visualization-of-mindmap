@@ -35,7 +35,7 @@ public class Link extends Object3D{
 		Log.v("angle", rx+","+ry+","+rz);
 		Log.v("z angle",","+rx);
 		
-		this.rotateX(-rx*0.6f);
+		this.rotateX(-rx*0.65f);
 //		parentLink.rotateZ(rz);
 		this.rotateZ(rz);
 
