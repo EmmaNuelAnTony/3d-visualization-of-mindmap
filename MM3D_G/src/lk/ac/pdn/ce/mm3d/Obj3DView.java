@@ -90,6 +90,7 @@ public class Obj3DView extends Activity {
 	RGBColor green = new RGBColor(0, 255, 0, 255);
 	RGBColor blue = new RGBColor(0, 0, 255, 255);
 
+
 	protected void onCreate(Bundle savedInstanceState) {
 
 		Logger.log("onCreate");
@@ -115,6 +116,7 @@ public class Obj3DView extends Activity {
 		});
 
 		renderer = new MyRenderer();
+		// mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 		mGLView.setRenderer(renderer);
 		setContentView(mGLView);
 	}
@@ -235,6 +237,8 @@ public class Obj3DView extends Activity {
 	}
 
 	class MyRenderer implements GLSurfaceView.Renderer {
+		GLFont glFont;
+		Paint paint = new Paint();
 
 		private boolean stop = false;
 		private boolean stopNextTime = false;
@@ -254,6 +258,10 @@ public class Obj3DView extends Activity {
 		}
 
 		public MyRenderer() {
+			paint.setTypeface(Typeface.create((String) null, Typeface.BOLD));
+			paint.setTextSize(12);
+			glFont = new GLFont(paint);
+			paint.setTextSize(50);
 		}
 
 		public void onSurfaceChanged(GL10 gl, int w, int h) {
@@ -389,29 +397,30 @@ public class Obj3DView extends Activity {
 
 			addAllNodes(root, null);
 			writeXML();
-			
-//			readXML();
-//			root = m1.getRoot();
-//			mm1= new MindMath(25);
-//			mm1.positionGenerate(root);
-//			
-//			addAllNodes(root,null);
-			
+
+			// readXML();
+			// root = m1.getRoot();
+			// mm1= new MindMath(25);
+			// mm1.positionGenerate(root);
+			//
+			// addAllNodes(root,null);
+
 		}
 
-		public void writeXML(){
+		public void writeXML() {
 			try {
-				String xml=m1.getXML();
-				File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "mmap.xml");
+				String xml = m1.getXML();
+				File file = new File(Environment.getExternalStorageDirectory()
+						.getAbsolutePath(), "mmap.xml");
 				FileOutputStream fOut = new FileOutputStream(file);
-		    	OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-		    	
-		    	osw.write(xml);
-		    	
-		    	osw.close();
-		    	osw.flush();
-		    	fOut.close();
-		    	fOut.close();
+				OutputStreamWriter osw = new OutputStreamWriter(fOut);
+
+				osw.write(xml);
+
+				osw.close();
+				osw.flush();
+				fOut.close();
+				fOut.close();
 			} catch (TransformerException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -423,47 +432,48 @@ public class Obj3DView extends Activity {
 				e.printStackTrace();
 			}
 		}
-		
-		public void readXML(){
-			try{
-				 
-				   File f = new File(Environment.getExternalStorageDirectory()+"/mmap.xml");
-				 
-				   FileInputStream fileIS = new FileInputStream(f);
-				 
-				   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
-				 
-				   String readString = new String();
-				   String xmlString = new String();
-				 
-				   //just reading each line and pass it on the debugger
-				 
-				   while((readString = buf.readLine())!= null){
-				 
-//				      Log.d("line: ", readString);
-					   xmlString+=readString;
-				 
-				   }
-				   
-//				   Log.v("xml read", "read : "+xmlString);
-				   m1.setXML(xmlString);
-				 
-				} catch (FileNotFoundException e) {
-				 
-				   e.printStackTrace();
-				 
-				} catch (IOException e){
-				 
-				   e.printStackTrace();
-				 
-				} catch (SAXException e){
-					
-				} catch (ParserConfigurationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
+		public void readXML() {
+			try {
+
+				File f = new File(Environment.getExternalStorageDirectory()
+						+ "/mmap.xml");
+
+				FileInputStream fileIS = new FileInputStream(f);
+
+				BufferedReader buf = new BufferedReader(new InputStreamReader(
+						fileIS));
+
+				String readString = new String();
+				String xmlString = new String();
+
+				// just reading each line and pass it on the debugger
+
+				while ((readString = buf.readLine()) != null) {
+
+					// Log.d("line: ", readString);
+					xmlString += readString;
+
 				}
-				 
-				 
+
+				// Log.v("xml read", "read : "+xmlString);
+				m1.setXML(xmlString);
+
+			} catch (FileNotFoundException e) {
+
+				e.printStackTrace();
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+
+			} catch (SAXException e) {
+
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 
 		public void addAllNodes(MMElement e1, Node parent) {
@@ -507,21 +517,24 @@ public class Obj3DView extends Activity {
 		}
 
 		public void onDrawFrame(GL10 gl) {
-			fb.freeMemory();
-			fb.clear(back);
-			try {
-				world.renderScene(fb);
+			// this method has to be very fast.Optimize as much as possible
 
+			// fb.freeMemory();
+
+			try {
+				fb.clear(back);
+
+				world.renderScene(fb);
 				world.draw(fb);
 			} catch (Exception e) {
-				Log.v("working", "new node adding still in process");
+				// Log.v("working", "new node adding still in process");
 			}
 			// printing text will go here
 			displayCaptions();
-
 			fb.display();
+
 			try {
-				Thread.sleep(10);
+				Thread.sleep(1);
 			} catch (Exception e) {
 				// No need for this...
 			}
@@ -530,26 +543,20 @@ public class Obj3DView extends Activity {
 
 		private void displayCaptions() {
 			// fonts
-			GLFont glFont;
-			Paint paint = new Paint();
-			//paint.setAntiAlias(true);
-			paint.setTypeface(Typeface.create((String) null, Typeface.BOLD));
-			paint.setTextSize(12);
-			glFont = new GLFont(paint);
-			paint.setTextSize(50);
-			addCaptionToANode(root,glFont);
+			addCaptionToANode(root, glFont);
 
 		}
 
-		private void addCaptionToANode(MMElement e1,GLFont glFont) {
-		
-			SimpleVector pos=new SimpleVector(e1.getPosition().getX(),e1.getPosition().getY(),e1.getPosition().getZ());
-			SimpleVector dir = Interact2D.project3D2D(cam, fb,pos);
+		private void addCaptionToANode(MMElement e1, GLFont glFont) {
 
-			glFont.blitString(fb, e1.getName(), (int) dir.x, (int) dir.y, (int) dir.z+10,
-					RGBColor.WHITE);
-			for (MMElement c1:e1.getChildren()){
-				addCaptionToANode(c1,glFont);
+			SimpleVector pos = new SimpleVector(e1.getPosition().getX(), e1
+					.getPosition().getY(), e1.getPosition().getZ());
+			SimpleVector dir = Interact2D.project3D2D(cam, fb, pos);
+
+			glFont.blitString(fb, e1.getName(), (int) dir.x, (int) dir.y,
+					(int) dir.z + 10, RGBColor.WHITE);
+			for (MMElement c1 : e1.getChildren()) {
+				addCaptionToANode(c1, glFont);
 			}
 		}
 	}
