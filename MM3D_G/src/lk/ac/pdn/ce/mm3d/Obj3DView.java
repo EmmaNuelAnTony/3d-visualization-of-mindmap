@@ -1,6 +1,6 @@
 package lk.ac.pdn.ce.mm3d;
 
-import glfont.*;
+import glfont.GLFont;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,39 +19,39 @@ import javax.microedition.khronos.opengles.GL10;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.xml.sax.SAXException;
-
 import lk.ac.ce.mm3d.Math.MindMath;
 import lk.ac.pdn.ce.mm3d.DataStructure.MMElement;
 import lk.ac.pdn.ce.mm3d.DataStructure.MapData;
 import lk.ac.pdn.ce.mm3d.DataStructure.Position;
 
+import org.xml.sax.SAXException;
+
 import android.app.Activity;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.threed.jpct.Camera;
+import com.threed.jpct.Config;
 import com.threed.jpct.FrameBuffer;
 import com.threed.jpct.Interact2D;
 import com.threed.jpct.Light;
 import com.threed.jpct.Logger;
 import com.threed.jpct.Object3D;
-import com.threed.jpct.Primitives;
 import com.threed.jpct.RGBColor;
 import com.threed.jpct.SimpleVector;
-import com.threed.jpct.Texture;
-import com.threed.jpct.TextureManager;
 import com.threed.jpct.World;
-import com.threed.jpct.util.BitmapHelper;
 import com.threed.jpct.util.MemoryHelper;
-import com.threed.jpct.Config;
 
 public class Obj3DView extends Activity {
 
@@ -90,7 +90,6 @@ public class Obj3DView extends Activity {
 	RGBColor green = new RGBColor(0, 255, 0, 255);
 	RGBColor blue = new RGBColor(0, 0, 255, 255);
 
-
 	protected void onCreate(Bundle savedInstanceState) {
 
 		Logger.log("onCreate");
@@ -100,6 +99,7 @@ public class Obj3DView extends Activity {
 		}
 
 		super.onCreate(savedInstanceState);
+
 		mGLView = new GLSurfaceView(getApplication());
 
 		mGLView.setEGLConfigChooser(new GLSurfaceView.EGLConfigChooser() {
@@ -114,11 +114,15 @@ public class Obj3DView extends Activity {
 				return configs[0];
 			}
 		});
+		//ContextMenu m1=null;
+		
 
+		//mGLView.createContextMenu(m1);
 		renderer = new MyRenderer();
 		// mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 		mGLView.setRenderer(renderer);
 		setContentView(mGLView);
+
 	}
 
 	@Override
@@ -163,22 +167,39 @@ public class Obj3DView extends Activity {
 				if (ob != null && (ob instanceof Node)) {
 					Log.v("object", ob.getClass().toString());
 					touchedNode = (Node) ob;
-					world.removeAllObjects();
 
-					Position temp1 = touchedNode.getMmElement().getPosition();
-					Position temp2 = root.getPosition();
-					MMElement n1 = new MMElement();
-					n1.setName("generated");
-					root = m1.getRoot();
-					if ((temp1.getX() == temp2.getX())
-							&& (temp1.getY() == temp2.getY())
-							&& (temp1.getZ() == temp2.getZ())) {
-						m1.addElement(n1, root);
-					} else {
-						m1.addElement(n1, touchedNode.getMmElement());
-					}
-					mm1.positionGenerate(root);
-					renderer.addAllNodes(root, null);
+					//Switch to add node window
+					setContentView(R.layout.layout1);
+					Button b1 = (Button) findViewById(R.id.buttonAdd);
+					b1.setOnClickListener(new View.OnClickListener() {
+
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							EditText name = (EditText) findViewById(R.id.textName);
+							String tmpName = name.getText().toString();
+							world.removeAllObjects();
+							Position temp1 = touchedNode.getMmElement()
+									.getPosition();
+							Position temp2 = root.getPosition();
+							MMElement n1 = new MMElement();
+							n1.setName(tmpName);
+							root = m1.getRoot();
+							if ((temp1.getX() == temp2.getX())
+									&& (temp1.getY() == temp2.getY())
+									&& (temp1.getZ() == temp2.getZ())) {
+								m1.addElement(n1, root);
+							} else {
+								m1.addElement(n1, touchedNode.getMmElement());
+							}
+							mm1.positionGenerate(root);
+							renderer.addAllNodes(root, null);
+
+							setContentView(mGLView);
+							//Back to 3D view
+						}
+
+					});
+
 				}
 			}
 
@@ -302,107 +323,108 @@ public class Obj3DView extends Activity {
 
 		private void test() {
 			m1 = new MapData("test map");
-//			root = m1.getRoot();
-//
-//			MMElement n1 = new MMElement();
-//			n1.setName("n1");
-//			m1.addElement(n1, root);
-//
-//			MMElement n2 = new MMElement();
-//			n2.setName("n2");
-//			m1.addElement(n2, root);
-//
-//			MMElement n3 = new MMElement();
-//			n3.setName("n3");
-//			m1.addElement(n3, root);
-//
-//			MMElement n4 = new MMElement();
-//			n4.setName("n4");
-//			m1.addElement(n4, root);
-//
-//			MMElement n5 = new MMElement();
-//			n5.setName("n5");
-//			m1.addElement(n5, root);
-//
-//			MMElement n6 = new MMElement();
-//			n6.setName("n6");
-//			m1.addElement(n6, root);
-//
-//			MMElement n7 = new MMElement();
-//			n7.setName("n7");
-//			m1.addElement(n7, root);
-//
-//			MMElement n8 = new MMElement();
-//			n8.setName("n8");
-//			m1.addElement(n8, root);
-//			// ******************** child group 1***************************
-//			MMElement n61 = new MMElement();
-//			n61.setName("n61");
-//			m1.addElement(n61, n6);
-//
-//			// **************************************************************
-//
-//			// ******************* child group 2****************************
-//
-//			MMElement n51 = new MMElement();
-//			n51.setName("n51");
-//			m1.addElement(n51, n5);
-//
-//			MMElement n52 = new MMElement();
-//			n52.setName("n52");
-//			m1.addElement(n52, n5);
-//
-//			MMElement n53 = new MMElement();
-//			n53.setName("n53");
-//			m1.addElement(n53, n5);
-//			// *******************************
-//
-//			// ******************** child group 3 ****************************
-//			MMElement n311 = new MMElement();
-//			n311.setName("n311");
-//			m1.addElement(n311, n61);
-//
-//			MMElement n312 = new MMElement();
-//			n312.setName("n312");
-//			m1.addElement(n312, n61);
-//
-//			MMElement n313 = new MMElement();
-//			n313.setName("n313");
-//			m1.addElement(n313, n61);
-//
-//			// **************** child group 5**************
-//
-//			MMElement n41 = new MMElement();
-//			n41.setName("n41");
-//			m1.addElement(n41, n4);
-//
-//			MMElement n31 = new MMElement();
-//			n31.setName("n31");
-//			m1.addElement(n31, n3);
-//
-//			MMElement n32 = new MMElement();
-//			n32.setName("n32");
-//			m1.addElement(n32, n3);
-//
-//			MMElement n21 = new MMElement();
-//			n21.setName("n21");
-//			m1.addElement(n21, n2);
-//
-//			MMElement n22 = new MMElement();
-//			n22.setName("n22");
-//			m1.addElement(n22, n2);
-//
-//			mm1 = new MindMath(25);
-//			mm1.positionGenerate(root);
+			// root = m1.getRoot();
+			//
+			// MMElement n1 = new MMElement();
+			// n1.setName("n1");
+			// m1.addElement(n1, root);
+			//
+			// MMElement n2 = new MMElement();
+			// n2.setName("n2");
+			// m1.addElement(n2, root);
+			//
+			// MMElement n3 = new MMElement();
+			// n3.setName("n3");
+			// m1.addElement(n3, root);
+			//
+			// MMElement n4 = new MMElement();
+			// n4.setName("n4");
+			// m1.addElement(n4, root);
+			//
+			// MMElement n5 = new MMElement();
+			// n5.setName("n5");
+			// m1.addElement(n5, root);
+			//
+			// MMElement n6 = new MMElement();
+			// n6.setName("n6");
+			// m1.addElement(n6, root);
+			//
+			// MMElement n7 = new MMElement();
+			// n7.setName("n7");
+			// m1.addElement(n7, root);
+			//
+			// MMElement n8 = new MMElement();
+			// n8.setName("n8");
+			// m1.addElement(n8, root);
+			// // ******************** child group 1***************************
+			// MMElement n61 = new MMElement();
+			// n61.setName("n61");
+			// m1.addElement(n61, n6);
+			//
+			// // **************************************************************
+			//
+			// // ******************* child group 2****************************
+			//
+			// MMElement n51 = new MMElement();
+			// n51.setName("n51");
+			// m1.addElement(n51, n5);
+			//
+			// MMElement n52 = new MMElement();
+			// n52.setName("n52");
+			// m1.addElement(n52, n5);
+			//
+			// MMElement n53 = new MMElement();
+			// n53.setName("n53");
+			// m1.addElement(n53, n5);
+			// // *******************************
+			//
+			// // ******************** child group 3
+			// ****************************
+			// MMElement n311 = new MMElement();
+			// n311.setName("n311");
+			// m1.addElement(n311, n61);
+			//
+			// MMElement n312 = new MMElement();
+			// n312.setName("n312");
+			// m1.addElement(n312, n61);
+			//
+			// MMElement n313 = new MMElement();
+			// n313.setName("n313");
+			// m1.addElement(n313, n61);
+			//
+			// // **************** child group 5**************
+			//
+			// MMElement n41 = new MMElement();
+			// n41.setName("n41");
+			// m1.addElement(n41, n4);
+			//
+			// MMElement n31 = new MMElement();
+			// n31.setName("n31");
+			// m1.addElement(n31, n3);
+			//
+			// MMElement n32 = new MMElement();
+			// n32.setName("n32");
+			// m1.addElement(n32, n3);
+			//
+			// MMElement n21 = new MMElement();
+			// n21.setName("n21");
+			// m1.addElement(n21, n2);
+			//
+			// MMElement n22 = new MMElement();
+			// n22.setName("n22");
+			// m1.addElement(n22, n2);
+			//
+			// mm1 = new MindMath(25);
+			// mm1.positionGenerate(root);
 
-			//addAllNodes(root, null);
-			//writeXML();
+			// addAllNodes(root, null);
+			// writeXML();
 
 			readXML();
 			root = m1.getRoot();
-			mm1= new MindMath(35);
+			mm1 = new MindMath(35);
 			mm1.positionGenerate(root);
-			addAllNodes(root,null);
+			addAllNodes(root, null);
 		}
 
 		public void writeXML() {
@@ -449,7 +471,7 @@ public class Obj3DView extends Activity {
 
 				while ((readString = buf.readLine()) != null) {
 
-					//Log.d("line: ", readString);
+					// Log.d("line: ", readString);
 					xmlString += readString;
 
 				}
