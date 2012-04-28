@@ -5,7 +5,7 @@
 ||IDE||Eclipse Indigo||
 ||Additional Tools||Android SDK||
 || ||[http://code.google.com/p/min3d min3d framework]||
-
+|| ||[http://www.jpct.net/ JCPT-AE framework]||
 
 = Details =
 
@@ -15,10 +15,10 @@ This project Can be divided in to following modules
  * Android 3d interface
 
 ==Data Structure==
-located under "DataStructure " . This contains the data structure of the mind map
+located under "DataStructure" . This contains the data structure of the mind map
 
 ==Mathematical Calculations==
-Mathematical calculation library for the mind map. located under "MathCalc "
+Mathematical calculation library for the mind map. located under "MathCalc"
 
 ==Android 3D interface==
 Platform dependent Presentation layer.Currently there are two interfaces
