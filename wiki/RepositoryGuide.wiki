@@ -15,7 +15,7 @@ This project Can be divided in to following modules
  * Android 3d interface
 
 ==Data Structure==
-located under "DataStructure". This contains the data structure of the mind map
+located under "DataStructure" . This contains the data structure of the mind map
 
 ==Mathematical Calculations==
 Mathematical calculation library for the mind map. located under "MathCalc"
