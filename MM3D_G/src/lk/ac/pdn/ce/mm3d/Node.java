@@ -1,19 +1,18 @@
 package lk.ac.pdn.ce.mm3d;
 
 import lk.ac.pdn.ce.mm3d.DataStructure.MMElement;
-import android.renderscript.Mesh.Primitive;
-import android.util.Log;
+
 import com.threed.jpct.Object3D;
 import com.threed.jpct.Primitives;
 import com.threed.jpct.RGBColor;
-import com.threed.jpct.SimpleVector;
 
 public class Node extends Object3D{
 	
-	private Node parent;
-	private Link parentLink;
-	private int level;
-	private MMElement mmElement;
+	
+	private Node parent;//parent node of the object
+	private Link parentLink;//link for object to it's parent
+	private int level;//map level
+	private MMElement mmElement;//datastructure element
 	
 	
 	public Node(RGBColor color){			// no parent means root node
@@ -45,6 +44,14 @@ public class Node extends Object3D{
 		return parent;
 	}
 	
+	public void setParent(Node parent) {
+		this.parent=parent;
+	}
+	
+
+	public void setParentLink(Link parentLink) {
+		this.parentLink = parentLink;
+	}
 
 	public Link getParentLink() {
 		return parentLink;
@@ -64,7 +71,6 @@ public class Node extends Object3D{
 		if (parent==null){
 			return;
 		}
-		
 		parentLink=new Link(mmElement);
 
 	}

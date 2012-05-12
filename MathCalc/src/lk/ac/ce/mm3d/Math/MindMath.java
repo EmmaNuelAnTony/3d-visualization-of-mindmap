@@ -34,16 +34,16 @@ public class MindMath {
 	}
 	
 	private void setPositionAsCartician(MMElement element,double r, double a,double b){
-		double x =r* Math.sin(b)*Math.cos(a);
-		double y =r* Math.sin(b)*Math.sin(a);
-		double z = r* Math.cos(b);
+		float x =(float) (r* Math.sin(b)*Math.cos(a));
+		float y =(float) (r* Math.sin(b)*Math.sin(a));
+		float z = (float) (r* Math.cos(b));
 		//System.out.println(element.getName());
 		//System.out.println(x+","+y+","+z);
 		element.setPosition(new Position(x,y,z));
 	}
 	
 	//assumption- root node is at (0,0,0)
-	private void calPositions(MMElement parent,float spaceAngle,int level,double firstHAngleOfLevel,double firstVAngleOfLevel){
+	private void calPositions(MMElement parent,float spaceAngle,int level,float firstHAngleOfLevel,float firstVAngleOfLevel){
 		int nuOfChildren=parent.getChildren().size();
 		float devideAngle=spaceAngle/((float) nuOfChildren*2);
 		float newWidthAngle =devideAngle;
@@ -51,8 +51,8 @@ public class MindMath {
 		
 		if(level%2==0){
 			//devide vertically
-			double currentAngleH=firstHAngleOfLevel+devideAngle;
-			double currentAngleV=firstVAngleOfLevel;
+			float currentAngleH=firstHAngleOfLevel+devideAngle;
+			float currentAngleV=firstVAngleOfLevel;
 			for(int i=0;i<nuOfChildren;i++){
 				
 //				System.out.println("level "+level);
@@ -67,8 +67,8 @@ public class MindMath {
 			}
 		}else{
 			//devide horizontally
-			double currentAngleH=firstHAngleOfLevel;
-			double currentAngleV=firstVAngleOfLevel+devideAngle;
+			float currentAngleH=firstHAngleOfLevel;
+			float currentAngleV=firstVAngleOfLevel+devideAngle;
 			for(int i=0;i<nuOfChildren;i++){
 				
 //				System.out.println("level "+level);

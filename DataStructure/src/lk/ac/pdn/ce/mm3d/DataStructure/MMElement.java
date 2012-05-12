@@ -71,10 +71,10 @@ public class MMElement {
 	 *            neighbouring node
 	 * @return distance. 0 if the positions are not defined
 	 */
-	public double getDistance(MMElement neighbour) {
+	public float getDistance(MMElement neighbour) {
 		try {
 
-			double thisx, thisy, thisz, parentx, parenty, parentz;
+			float thisx, thisy, thisz, parentx, parenty, parentz;
 			thisx = this.getPosition().getX();
 			thisy = this.getPosition().getY();
 			thisz = this.getPosition().getZ();
@@ -82,7 +82,7 @@ public class MMElement {
 			parenty = neighbour.getPosition().getY();
 			parentz = neighbour.getPosition().getZ();
 
-			double d = Math.sqrt(((Math.pow(thisx - parentx, 2))
+			float d = (float)Math.sqrt(((Math.pow(thisx - parentx, 2))
 					+ (Math.pow(thisy - parenty, 2)) + (Math.pow(thisz
 					- parentz, 2))));
 			return d;
