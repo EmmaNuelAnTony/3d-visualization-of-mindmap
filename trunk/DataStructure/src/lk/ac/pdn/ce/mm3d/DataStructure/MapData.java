@@ -1,10 +1,5 @@
 package lk.ac.pdn.ce.mm3d.DataStructure;
 
-import java.io.IOException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.xml.sax.SAXException;
 
 /**
  * represent a mindmap. starting from root node
@@ -51,48 +46,4 @@ public class MapData {
 		cElement.setParent(null);
 	}
 	
-	/**
-	 * @deprecated Problems due to android Incompatibility.use setXML() instead
-	 * To load new mind map from file.Existing map will be deleted
-	 * @param fileName
-	 * @throws IOException 
-	 * @throws SAXException 
-	 * @throws ParserConfigurationException 
-	 */
-	public synchronized void loadXML(String fileName) throws ParserConfigurationException, SAXException, IOException{
-		XMLFile.retriveXML(fileName, this);
-	}
-	
-	/**
-	 * @deprecated Problems due to android Incompatibility.use getXML() instead.
-	 * Save existing mind map into a file 
-	 * @param fileName
-	 * @throws TransformerException 
-	 * @throws ParserConfigurationException 
-	 */
-	public synchronized void saveXML(String fileName) throws ParserConfigurationException, TransformerException{
-		XMLFile.saveXML(fileName, root);
-	}
-	
-	/**
-	 * to get ming map xml output
-	 * @return XML output
-	 * @throws TransformerException
-	 * @throws IOException
-	 * @throws ParserConfigurationException
-	 */
-	public synchronized String getXML() throws TransformerException, IOException, ParserConfigurationException{
-		return XMLFile.getXML(root);
-	}
-	
-	/**
-	 * to set the nodes using XML
-	 * @param xml XML String
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 */
-	public synchronized void setXML(String xml) throws ParserConfigurationException, SAXException, IOException{
-		XMLFile.setXML(xml, this);
-	}
 }

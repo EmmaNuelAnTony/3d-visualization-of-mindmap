@@ -12,7 +12,17 @@ import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 
 
-class XMLFile {
+public class XMLFile implements FileFormat{
+	
+	@Override
+	public synchronized void readFormat(String content,MapData map) throws Exception{
+		setXML(content, map);
+	}
+
+	@Override
+	public synchronized String writeFormat(MapData map) throws Exception {
+		return getXML(map.getRoot());
+	}
 	
 	/**
 	 * To get ming map xml output
@@ -22,7 +32,7 @@ class XMLFile {
 	 * @throws IOException
 	 * @throws ParserConfigurationException
 	 */
-	protected static String getXML(MMElement rootElement) throws TransformerException, IOException, ParserConfigurationException{
+	private static String getXML(MMElement rootElement) throws TransformerException, IOException, ParserConfigurationException{
 		DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
 		Document doc = docBuilder.newDocument();
@@ -56,47 +66,7 @@ class XMLFile {
 		
 	}
 
-	/**
-	 * @deprecated Problems due to android Incompatibility.use getString instead
-	 * Save Datastructure to XML file
-	 * @param fileName 
-	 * @param rootElement
-	 * @throws ParserConfigurationException
-	 * @throws TransformerException
-	 */
-	protected static void saveXML(String fileName, MMElement rootElement)
-			throws ParserConfigurationException, TransformerException {
-
-		DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
-		DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
-		Document doc = docBuilder.newDocument();
-
-		// create the root element and add it to the document
-		Element root = doc.createElement("node");
-		root.setAttribute("name", rootElement.getName());
-		doc.appendChild(root);
-
-		appendChildElementsToXML(rootElement, root, doc);
-
-		// set up a transformer
-		TransformerFactory transfac = TransformerFactory.newInstance();
-		Transformer trans = transfac.newTransformer();
-		trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-		trans.setOutputProperty(OutputKeys.INDENT, "yes");
-
-		// print to file
-		File file = new File(fileName);
-		Result result = new StreamResult(file);
-
-		// Write the DOM document to the file
-		DOMSource source = new DOMSource(doc);
-		Transformer xformer = TransformerFactory.newInstance().newTransformer();
-		xformer.transform(source, result);
-		
-		
-	}
-
-
+	
 	private static void appendChildElementsToXML(MMElement parent,
 			Element xmlParent, Document doc) {
 		List<MMElement> children = parent.getChildren();
@@ -122,7 +92,7 @@ class XMLFile {
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	protected static void setXML(String xml,MapData map) throws ParserConfigurationException, SAXException, IOException{
+	private static void setXML(String xml,MapData map) throws ParserConfigurationException, SAXException, IOException{
 		MMElement rootElement = map.getRoot();
 
 		ByteArrayInputStream stream = new ByteArrayInputStream(xml.getBytes());
@@ -134,34 +104,6 @@ class XMLFile {
 		// remove old mindmap data
 		rootElement.getChildren().clear();
 		rootElement.setName(doc.getDocumentElement().getAttribute("name"));
-		appendChildElementsFromXML(rootElement, doc.getDocumentElement(), map);
-	}
-
-	/**
-	 * @deprecated Problems due to android Incompatibility. use setXML instead
-	 * retrive XML file into the datastructure
-	 * @param fileName
-	 * @param map
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 */
-	protected static void retriveXML(String fileName, MapData map)
-			throws ParserConfigurationException, SAXException, IOException {
-
-		MMElement rootElement = map.getRoot();
-
-		File fXmlFile = new File(fileName);
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(fXmlFile);
-		doc.getDocumentElement().normalize();
-
-		// remove old mindmap data
-		rootElement.getChildren().clear();
-
-		rootElement.setName(doc.getDocumentElement().getAttribute("name"));
-
 		appendChildElementsFromXML(rootElement, doc.getDocumentElement(), map);
 	}
 
@@ -185,4 +127,6 @@ class XMLFile {
 			}
 		}
 	}
+
+	
 }

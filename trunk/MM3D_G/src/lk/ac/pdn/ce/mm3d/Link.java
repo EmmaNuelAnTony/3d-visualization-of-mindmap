@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.threed.jpct.Object3D;
 import com.threed.jpct.Primitives;
-import com.threed.jpct.RGBColor;
 import com.threed.jpct.SimpleVector;
 
 public class Link extends Object3D{

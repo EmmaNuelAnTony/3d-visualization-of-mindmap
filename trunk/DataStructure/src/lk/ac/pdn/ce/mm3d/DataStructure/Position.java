@@ -6,37 +6,37 @@ package lk.ac.pdn.ce.mm3d.DataStructure;
  *
  */
 public class Position {
-	private double X;
-	private double Y;
-	private double Z;
+	private float X;
+	private float Y;
+	private float Z;
 	
 	public Position(){
 		super();
 	}
 	
-	public Position(double x, double y, double z) {
+	public Position(float x, float y, float z) {
 		super();
 		X = x;
 		Y = y;
 		Z = z;
 	}
 	
-	public double getX() {
+	public float getX() {
 		return X;
 	}
-	public void setX(double x) {
+	public void setX(float x) {
 		X = x;
 	}
-	public double getY() {
+	public float getY() {
 		return Y;
 	}
-	public void setY(double y) {
+	public void setY(float y) {
 		Y = y;
 	}
-	public double getZ() {
+	public float getZ() {
 		return Z;
 	}
-	public void setZ(double z) {
+	public void setZ(float z) {
 		Z = z;
 	}
 	
