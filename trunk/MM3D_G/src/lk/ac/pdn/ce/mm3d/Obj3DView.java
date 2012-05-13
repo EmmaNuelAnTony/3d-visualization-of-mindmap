@@ -44,7 +44,7 @@ import com.threed.jpct.World;
 import com.threed.jpct.util.MemoryHelper;
 
 enum OpMode {
-	ROTATE, ADD, EDIT
+	ROTATE, ADD, EDIT, ZOOM
 }
 
 public class Obj3DView extends Activity {
@@ -68,7 +68,7 @@ public class Obj3DView extends Activity {
 	RGBColor green = new RGBColor(0, 255, 0, 255);
 	RGBColor blue = new RGBColor(0, 0, 255, 255);
 
-	public OpMode currentMode = OpMode.ROTATE;// current operation mode
+	public OpMode currentMode = OpMode.ZOOM;// current operation mode
 
 	// Used to handle pause and resume...
 	private static Obj3DView master = null;
@@ -147,26 +147,26 @@ public class Obj3DView extends Activity {
 					s1.y += 50;
 					s1.z += 50;
 
-					if(currentMode==OpMode.ADD){
-					 // cam.moveCamera(touchedNode.getCenter(), 100);
-					 // Switch to add node window
-					 setContentView(R.layout.layout1);
-					 Button b1 = (Button) findViewById(R.id.buttonAdd);
-					 b1.setOnClickListener(new View.OnClickListener() {
-					
-					 public void onClick(View v) {
-						 EditText name = (EditText) findViewById(R.id.textName);
-						 String tmpName = name.getText().toString();
-						 MMElement e1=new MMElement();
-						 e1.setName(tmpName);
-						 map.addElement(e1, touchedNode.getMmElement());
-						 mm1.positionGenerate(map.getRoot());
-						 world.removeAllObjects();
-						 andMap =new AndObj(map, world);			
-						 setContentView(mGLView);
-						 // Back to 3D view
-					 	}
-					 });
+					if (currentMode == OpMode.ADD) {
+						// cam.moveCamera(touchedNode.getCenter(), 100);
+						// Switch to add node window
+						setContentView(R.layout.layout1);
+						Button b1 = (Button) findViewById(R.id.buttonAdd);
+						b1.setOnClickListener(new View.OnClickListener() {
+
+							public void onClick(View v) {
+								EditText name = (EditText) findViewById(R.id.textName);
+								String tmpName = name.getText().toString();
+								MMElement e1 = new MMElement();
+								e1.setName(tmpName);
+								map.addElement(e1, touchedNode.getMmElement());
+								mm1.positionGenerate(map.getRoot());
+								world.removeAllObjects();
+								andMap = new AndObj(map, world);
+								setContentView(mGLView);
+								// Back to 3D view
+							}
+						});
 					}
 
 				}
@@ -216,6 +216,16 @@ public class Obj3DView extends Activity {
 							cam.lookAt(touchedNode.getOrigin());
 						}
 					}
+				} else if (currentMode == OpMode.ZOOM) {
+					if (touchedNode != null) {
+						cam.lookAt(touchedNode.getOrigin());
+					}
+					if (swipeY > prevSwipeY) {
+						cam.moveCamera(Camera.CAMERA_MOVEOUT, 1f);
+					} else {
+						cam.moveCamera(Camera.CAMERA_MOVEIN, 1f);
+					}
+
 				}
 			}
 			prevSwipeX = swipeX;
