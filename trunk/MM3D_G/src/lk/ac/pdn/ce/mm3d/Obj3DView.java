@@ -44,7 +44,7 @@ import com.threed.jpct.World;
 import com.threed.jpct.util.MemoryHelper;
 
 enum OpMode {
-	ROTATE, ADD, EDIT, ZOOM
+	ROTATE, ADD, DELETE, ZOOM
 }
 
 public class Obj3DView extends Activity {
@@ -68,7 +68,7 @@ public class Obj3DView extends Activity {
 	RGBColor green = new RGBColor(0, 255, 0, 255);
 	RGBColor blue = new RGBColor(0, 0, 255, 255);
 
-	public OpMode currentMode = OpMode.ZOOM;// current operation mode
+	public OpMode currentMode = OpMode.ROTATE;// current operation mode
 
 	// Used to handle pause and resume...
 	private static Obj3DView master = null;
@@ -146,7 +146,9 @@ public class Obj3DView extends Activity {
 					s1.x += 50;
 					s1.y += 50;
 					s1.z += 50;
-
+					if (touchedNode != null) {
+						cam.lookAt(touchedNode.getOrigin());
+					}
 					if (currentMode == OpMode.ADD) {
 						// cam.moveCamera(touchedNode.getCenter(), 100);
 						// Switch to add node window
@@ -167,6 +169,15 @@ public class Obj3DView extends Activity {
 								// Back to 3D view
 							}
 						});
+					} else if (currentMode == OpMode.DELETE) {
+						if (touchedNode != null
+								&& touchedNode!=andMap.getRootNode()) {
+							map.removeElement(touchedNode.getMmElement());
+							mm1.positionGenerate(map.getRoot());
+							world.removeAllObjects();
+							andMap = new AndObj(map, world);
+							touchedNode = andMap.getRootNode();
+						}
 					}
 
 				}
@@ -191,43 +202,41 @@ public class Obj3DView extends Activity {
 			swipeX = event.getX();
 			swipeY = event.getY();
 			actionTime = System.currentTimeMillis() - downTime;
-			if (actionTime < 1000) { // touch and move, move the camera
-
-				if ((swipeX - prevSwipeX) > 5 || (swipeY - prevSwipeY) > 5) {
-					// cam.setPosition(campos.x - (swipeX - prevSwipeX) / 40,
-					// campos.y + (swipeY - prevSwipeY) / 400, campos.z);
-					downTime = System.currentTimeMillis();
-				}
-			} else { // touch and hold for 3sec and then move, rotate the camera
-				if (currentMode == OpMode.ROTATE) {
-					if (Math.abs(swipeX - prevSwipeX) > Math.abs(swipeY
-							- prevSwipeY)) {
-						if (touchedNode != null) {
-							cam.setPosition(touchedNode.getOrigin());
-							cam.rotateCameraY((swipeX - prevSwipeX) / 100f);
-							cam.moveCamera(Camera.CAMERA_MOVEOUT, 100f);
-							cam.lookAt(touchedNode.getOrigin());
-						}
-					} else {
-						if (touchedNode != null) {
-							cam.setPosition(touchedNode.getOrigin());
-							cam.rotateCameraX((swipeY - prevSwipeY) / 100f);
-							cam.moveCamera(Camera.CAMERA_MOVEOUT, 100f);
-							cam.lookAt(touchedNode.getOrigin());
-						}
-					}
-				} else if (currentMode == OpMode.ZOOM) {
+			// if (actionTime < 1000) { // touch and move, move the camera
+			//
+			// if ((swipeX - prevSwipeX) > 5 || (swipeY - prevSwipeY) > 5) {
+			// // cam.setPosition(campos.x - (swipeX - prevSwipeX) / 40,
+			// // campos.y + (swipeY - prevSwipeY) / 400, campos.z);
+			// downTime = System.currentTimeMillis();
+			// }
+			// } else { // touch and hold for 3sec and then move, rotate the
+			// camera
+			if (currentMode == OpMode.ROTATE) {
+				if (Math.abs(swipeX - prevSwipeX) > Math.abs(swipeY
+						- prevSwipeY)) {
 					if (touchedNode != null) {
+						cam.setPosition(touchedNode.getOrigin());
+						cam.rotateCameraY((swipeX - prevSwipeX) / 100f);
+						cam.moveCamera(Camera.CAMERA_MOVEOUT, 100f);
 						cam.lookAt(touchedNode.getOrigin());
 					}
-					if (swipeY > prevSwipeY) {
-						cam.moveCamera(Camera.CAMERA_MOVEOUT, 1f);
-					} else {
-						cam.moveCamera(Camera.CAMERA_MOVEIN, 1f);
+				} else {
+					if (touchedNode != null) {
+						cam.setPosition(touchedNode.getOrigin());
+						cam.rotateCameraX((swipeY - prevSwipeY) / 100f);
+						cam.moveCamera(Camera.CAMERA_MOVEOUT, 100f);
+						cam.lookAt(touchedNode.getOrigin());
 					}
-
 				}
+			} else if (currentMode == OpMode.ZOOM) {
+				if (swipeY > prevSwipeY) {
+					cam.moveCamera(Camera.CAMERA_MOVEOUT, 1f);
+				} else {
+					cam.moveCamera(Camera.CAMERA_MOVEIN, 1f);
+				}
+
 			}
+			// }
 			prevSwipeX = swipeX;
 			prevSwipeY = swipeY;
 			return true;
@@ -491,8 +500,13 @@ public class Obj3DView extends Activity {
 			SimpleVector dir = Interact2D.project3D2D(cam, fb, pos);
 
 			if (dir != null) {
-				glFont.blitString(fb, e1.getName(), (int) dir.x, (int) dir.y,
-						(int) dir.z + 10, RGBColor.WHITE);
+				if (touchedNode != null && touchedNode.getMmElement() == e1) {
+					glFont.blitString(fb, e1.getName(), (int) dir.x,
+							(int) dir.y, (int) dir.z + 10, RGBColor.GREEN);
+				} else {
+					glFont.blitString(fb, e1.getName(), (int) dir.x,
+							(int) dir.y, (int) dir.z + 10, RGBColor.WHITE);
+				}
 			}
 			for (MMElement c1 : e1.getChildren()) {
 				addCaptionToANode(c1, glFont);
