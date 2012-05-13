@@ -162,7 +162,7 @@ public class Obj3DView extends Activity {
 						 map.addElement(e1, touchedNode.getMmElement());
 						 mm1.positionGenerate(map.getRoot());
 						 world.removeAllObjects();
-						 andMap.addAllNodes(map.getRoot(), null,world);				
+						 andMap =new AndObj(map, world);			
 						 setContentView(mGLView);
 						 // Back to 3D view
 					 	}
