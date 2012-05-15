@@ -40,6 +40,7 @@ public class XMLFile implements FileFormat{
 		// create the root element and add it to the document
 		Element root = doc.createElement("node");
 		root.setAttribute("name", rootElement.getName());
+		root.setAttribute("details", rootElement.getDetails());
 		doc.appendChild(root);
 
 		appendChildElementsToXML(rootElement, root, doc);
@@ -104,6 +105,7 @@ public class XMLFile implements FileFormat{
 		// remove old mindmap data
 		rootElement.getChildren().clear();
 		rootElement.setName(doc.getDocumentElement().getAttribute("name"));
+		rootElement.setDetails(doc.getDocumentElement().getAttribute("details"));
 		appendChildElementsFromXML(rootElement, doc.getDocumentElement(), map);
 	}
 

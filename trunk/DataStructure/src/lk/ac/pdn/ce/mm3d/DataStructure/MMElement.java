@@ -12,6 +12,7 @@ import java.util.List;
 public class MMElement {
 	private String id;
 	private String name;
+	private String Details;
 	private Position position;
 	private MMElement parent;
 	private List<MMElement> children;
@@ -62,6 +63,14 @@ public class MMElement {
 
 	public void setParent(MMElement parent) {
 		this.parent = parent;
+	}
+	
+	public String getDetails() {
+		return Details;
+	}
+
+	public void setDetails(String details) {
+		Details = details;
 	}
 
 	/**

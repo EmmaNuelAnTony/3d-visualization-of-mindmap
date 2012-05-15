@@ -66,7 +66,7 @@ public class Obj3DView extends Activity {
 	private World world = null;
 
 	// Basic colors
-	//private RGBColor back = new RGBColor(50, 50, 100);
+	// private RGBColor back = new RGBColor(50, 50, 100);
 	private RGBColor back = new RGBColor(100, 100, 200);
 	RGBColor red = new RGBColor(255, 0, 0, 255);
 	RGBColor green = new RGBColor(0, 255, 0, 255);
@@ -102,7 +102,7 @@ public class Obj3DView extends Activity {
 		renderer = new MyRenderer();
 		mGLView.setRenderer(renderer);
 		setContentView(mGLView);
-		
+
 		drawPannel();
 
 	}
@@ -147,7 +147,7 @@ public class Obj3DView extends Activity {
 				currentMode = OpMode.DELETE;
 			}
 		});
-		
+
 		Button btnreset = new Button(this);
 		btnreset.setText("Reset");
 		ll.addView(btnreset);
@@ -220,15 +220,17 @@ public class Obj3DView extends Activity {
 
 							public void onClick(View v) {
 								EditText name = (EditText) findViewById(R.id.textName);
+								EditText det = (EditText) findViewById(R.id.textInfo);
 								String tmpName = name.getText().toString();
 								MMElement e1 = new MMElement();
 								e1.setName(tmpName);
+								e1.setDetails(det.getText().toString());
 								map.addElement(e1, touchedNode.getMmElement());
 								mm1.positionGenerate(map.getRoot());
 								world.removeAllObjects();
 								andMap = new AndObj(map, world);
 								setContentView(mGLView);
-								
+
 								drawPannel();
 								// Back to 3D view
 							}
@@ -377,10 +379,12 @@ public class Obj3DView extends Activity {
 
 			MMElement n1 = new MMElement();
 			n1.setName("n1");
+			n1.setDetails("details");
 			map.addElement(n1, root);
 
 			MMElement n2 = new MMElement();
 			n2.setName("n2");
+			n1.setDetails("details");
 			map.addElement(n2, root);
 
 			MMElement n3 = new MMElement();
@@ -542,9 +546,10 @@ public class Obj3DView extends Activity {
 			}
 			// printing text will go here
 			displayCaptions();
-			
-			glFont.blitString(fb,"Mode "+currentMode.name(), 20,20, 10, RGBColor.RED);
-			
+
+			glFont.blitString(fb, "Mode " + currentMode.name(), 20, 20, 10,
+					RGBColor.RED);
+
 			fb.display();
 			try {
 				Thread.sleep(1);
@@ -570,9 +575,15 @@ public class Obj3DView extends Activity {
 				if (touchedNode != null && touchedNode.getMmElement() == e1) {
 					glFont.blitString(fb, e1.getName(), (int) dir.x,
 							(int) dir.y, (int) dir.z + 10, RGBColor.GREEN);
+					if (touchedNode.getMmElement().getDetails() != null) {
+						glFont.blitString(fb, "Details "
+								+ touchedNode.getMmElement().getDetails(), 30,
+								40, 10, RGBColor.GREEN);
+					}
 				} else {
 					glFont.blitString(fb, e1.getName(), (int) dir.x,
 							(int) dir.y, (int) dir.z + 10, RGBColor.WHITE);
+
 				}
 			}
 			for (MMElement c1 : e1.getChildren()) {
