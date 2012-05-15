@@ -27,10 +27,13 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.threed.jpct.Camera;
 import com.threed.jpct.Config;
@@ -63,7 +66,8 @@ public class Obj3DView extends Activity {
 	private World world = null;
 
 	// Basic colors
-	private RGBColor back = new RGBColor(50, 50, 100);
+	//private RGBColor back = new RGBColor(50, 50, 100);
+	private RGBColor back = new RGBColor(100, 100, 200);
 	RGBColor red = new RGBColor(255, 0, 0, 255);
 	RGBColor green = new RGBColor(0, 255, 0, 255);
 	RGBColor blue = new RGBColor(0, 0, 255, 255);
@@ -98,6 +102,64 @@ public class Obj3DView extends Activity {
 		renderer = new MyRenderer();
 		mGLView.setRenderer(renderer);
 		setContentView(mGLView);
+		
+		drawPannel();
+
+	}
+
+	private void drawPannel() {
+		LinearLayout ll = new LinearLayout(this);
+
+		Button btnrot = new Button(this);
+		btnrot.setText("Rotate");
+		ll.addView(btnrot);
+		ll.setGravity(Gravity.BOTTOM | Gravity.LEFT);
+		btnrot.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				currentMode = OpMode.ROTATE;
+			}
+		});
+
+		Button btnzoom = new Button(this);
+		btnzoom.setText("Zoom");
+		ll.addView(btnzoom);
+		btnzoom.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				currentMode = OpMode.ZOOM;
+			}
+		});
+
+		Button btnadd = new Button(this);
+		btnadd.setText("Add");
+		ll.addView(btnadd);
+		btnadd.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				currentMode = OpMode.ADD;
+			}
+		});
+
+		Button btnrem = new Button(this);
+		btnrem.setText("Remove");
+		ll.addView(btnrem);
+		btnrem.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				currentMode = OpMode.DELETE;
+			}
+		});
+		
+		Button btnreset = new Button(this);
+		btnreset.setText("Reset");
+		ll.addView(btnreset);
+		btnreset.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				world.removeAllObjects();
+				andMap = new AndObj(map, world);
+			}
+		});
+
+		this.addContentView(ll, new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT));
 	}
 
 	@Override
@@ -166,12 +228,14 @@ public class Obj3DView extends Activity {
 								world.removeAllObjects();
 								andMap = new AndObj(map, world);
 								setContentView(mGLView);
+								
+								drawPannel();
 								// Back to 3D view
 							}
 						});
 					} else if (currentMode == OpMode.DELETE) {
 						if (touchedNode != null
-								&& touchedNode!=andMap.getRootNode()) {
+								&& touchedNode != andMap.getRootNode()) {
 							map.removeElement(touchedNode.getMmElement());
 							mm1.positionGenerate(map.getRoot());
 							world.removeAllObjects();
@@ -282,7 +346,7 @@ public class Obj3DView extends Activity {
 				world.setAmbientLight(20, 20, 20);
 
 				sun = new Light(world);
-				sun.setIntensity(250, 250, 250);
+				sun.setIntensity(50, 50, 50);
 
 				cam = world.getCamera();
 				cam.moveCamera(Camera.CAMERA_MOVEOUT, 200);
@@ -478,6 +542,9 @@ public class Obj3DView extends Activity {
 			}
 			// printing text will go here
 			displayCaptions();
+			
+			glFont.blitString(fb,"Mode "+currentMode.name(), 20,20, 10, RGBColor.RED);
+			
 			fb.display();
 			try {
 				Thread.sleep(1);
