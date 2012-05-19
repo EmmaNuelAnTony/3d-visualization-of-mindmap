@@ -43,6 +43,8 @@ import com.threed.jpct.Light;
 import com.threed.jpct.Logger;
 import com.threed.jpct.RGBColor;
 import com.threed.jpct.SimpleVector;
+import com.threed.jpct.Texture;
+import com.threed.jpct.TextureManager;
 import com.threed.jpct.World;
 import com.threed.jpct.util.MemoryHelper;
 
@@ -309,7 +311,7 @@ public class Obj3DView extends Activity {
 		}
 
 		try {
-			Thread.sleep(15);
+			Thread.sleep(20);
 		} catch (Exception e) {
 			// No need for this...
 		}
