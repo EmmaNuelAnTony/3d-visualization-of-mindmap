@@ -9,7 +9,7 @@ import com.threed.jpct.RGBColor;
 public class Node extends Object3D {
 
 	private Node parent;// parent node of the object
-	private Link parentLink;// link for object to it's parent
+	private Link2 parentLink;// link for object to it's parent
 	private int level;// map level
 	private MMElement mmElement;// datastructure element
 
@@ -54,11 +54,11 @@ public class Node extends Object3D {
 		this.parent = parent;
 	}
 
-	public void setParentLink(Link parentLink) {
+	public void setParentLink(Link2 parentLink) {
 		this.parentLink = parentLink;
 	}
 
-	public Link getParentLink() {
+	public Link2 getParentLink() {
 		return parentLink;
 	}
 
@@ -74,7 +74,7 @@ public class Node extends Object3D {
 		if (parent == null) {
 			return;
 		}
-		parentLink = new Link(mmElement);
+		parentLink = new Link2(mmElement);
 
 	}
 
