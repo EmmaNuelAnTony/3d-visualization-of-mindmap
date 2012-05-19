@@ -362,7 +362,11 @@ public class Obj3DView extends Activity {
 
 				/* Loding mindmap goes here */
 				test();
-
+				
+//				Link2 k=new Link2(100);
+//				k.strip();
+//				k.build();
+//				world.addObject(k);
 				// finished loading
 				MemoryHelper.compact();
 
