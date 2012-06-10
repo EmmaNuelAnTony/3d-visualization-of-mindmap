@@ -21,6 +21,7 @@ import lk.ac.pdn.ce.mm3d.DataStructure.MMElement;
 import lk.ac.pdn.ce.mm3d.DataStructure.MapData;
 import lk.ac.pdn.ce.mm3d.DataStructure.XMLFile;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.opengl.GLSurfaceView;
@@ -38,6 +39,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.lamerman.FileDialog;
 import com.threed.jpct.Camera;
 import com.threed.jpct.Config;
 import com.threed.jpct.FrameBuffer;
@@ -57,6 +59,8 @@ enum OpMode {
 
 public class Obj3DView extends Activity {
 
+	private static final int REQUEST_LOAD = 1;	// Load code for file explorer output
+	private static final int REQUEST_SAVE = 2;	// Saving code for file explorer output
 	private MapData map;// mind map object
 	private MindMath mm1;// mind math object. use for calculations
 	private AndObj andMap;// android 3D map object
@@ -168,6 +172,7 @@ public class Obj3DView extends Activity {
 		btnreset.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				world.removeAllObjects();
+				map = new MapData("Root");
 				andMap = new AndObj(map, world);
 			}
 		});
@@ -373,15 +378,55 @@ public class Obj3DView extends Activity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.import_xml:
-			renderer.readXML();
+			startFileExplorer(REQUEST_LOAD);
+//			renderer.readXML();
 			return true;
 		case R.id.export_xml:
-			renderer.writeXML();
+			startFileExplorer(REQUEST_SAVE);
+//			renderer.writeXML();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	public void startFileExplorer(int REQUEST_CODE){
+		Intent intent = new Intent(getBaseContext(), FileDialog.class);
+        intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory()
+				.getAbsolutePath());
+        
+        //can user select directories or not
+        intent.putExtra(FileDialog.CAN_SELECT_DIR, true);
+        
+        //alternatively you can set file filter
+        //intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "png" });
+        
+        startActivityForResult(intent, REQUEST_CODE);
+	}
+	
+	// Capture file explorer output
+	public synchronized void onActivityResult(final int requestCode,
+            int resultCode, final Intent data) {
+
+            if (resultCode == Activity.RESULT_OK) {
+
+            	String filePath = data.getStringExtra(FileDialog.RESULT_PATH);
+            	
+                    if (requestCode == REQUEST_SAVE) {
+                            Log.v("saving", filePath);
+                            renderer.writeXML(filePath);
+                    } else if (requestCode == REQUEST_LOAD) {
+                            Log.v("Loading", filePath);
+                            renderer.readXML(filePath);
+                    }
+                    
+                    
+
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                    
+            }
+
+    }
 
 	/*
 	 * 
@@ -552,12 +597,11 @@ public class Obj3DView extends Activity {
 		/**
 		 * Write the mind map to XML file
 		 */
-		public void writeXML() {
+		public void writeXML(String path) {
 			try {
 				FileFormat xmlformat = new XMLFile();
 				String xml = xmlformat.writeFormat(map);
-				File file = new File(Environment.getExternalStorageDirectory()
-						.getAbsolutePath(), "mmap.xml");
+				File file = new File(path);
 				FileOutputStream fOut = new FileOutputStream(file);
 				OutputStreamWriter osw = new OutputStreamWriter(fOut);
 
@@ -576,11 +620,10 @@ public class Obj3DView extends Activity {
 		 * read map from XML file
 		 */
 		
-		public void readXML() {
+		public void readXML(String path) {
 			try {
 
-				File f = new File(Environment.getExternalStorageDirectory()
-						+ "/mmap.xml");
+				File f = new File(path);
 				FileInputStream fileIS = new FileInputStream(f);
 				BufferedReader buf = new BufferedReader(new InputStreamReader(
 						fileIS));
