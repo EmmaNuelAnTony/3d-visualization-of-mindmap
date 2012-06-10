@@ -76,7 +76,8 @@ public class XMLFile implements FileFormat{
 				Element XMLChild = doc.createElement("node");
 				// Add other attributes for save here
 				XMLChild.setAttribute("name", child.getName());
-
+				XMLChild.setAttribute("details", child.getDetails());
+				
 				xmlParent.appendChild(XMLChild);
 
 				// recursive call for child
@@ -108,6 +109,7 @@ public class XMLFile implements FileFormat{
 		rootElement.setDetails(doc.getDocumentElement().getAttribute("details"));
 		appendChildElementsFromXML(rootElement, doc.getDocumentElement(), map);
 	}
+	
 
 	private static void appendChildElementsFromXML(MMElement parent,
 			Element xmlParent, MapData map) {
@@ -120,7 +122,7 @@ public class XMLFile implements FileFormat{
 					MMElement child = new MMElement();
 					// retrive attributes
 					child.setName(XMLChild.getAttribute("name"));
-
+					child.setDetails(XMLChild.getAttribute("details"));
 					map.addElement(child, parent);
 
 					// recursive call for child
