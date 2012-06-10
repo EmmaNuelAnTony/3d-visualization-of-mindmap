@@ -52,7 +52,7 @@ import com.threed.jpct.World;
 import com.threed.jpct.util.MemoryHelper;
 
 enum OpMode {
-	ROTATE, ADD, DELETE, ZOOM
+	ROTATE, ADD, DELETE, ZOOM, EDIT
 }
 
 public class Obj3DView extends Activity {
@@ -141,6 +141,15 @@ public class Obj3DView extends Activity {
 		btnadd.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				currentMode = OpMode.ADD;
+			}
+		});
+		
+		Button btedit = new Button(this);
+		btedit.setText("Edit");
+		ll.addView(btedit);
+		btedit.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				currentMode = OpMode.EDIT;
 			}
 		});
 
@@ -240,7 +249,32 @@ public class Obj3DView extends Activity {
 								// Back to 3D view
 							}
 						});
-					} else if (currentMode == OpMode.DELETE) {
+					}else if (currentMode == OpMode.EDIT) {
+						// cam.moveCamera(touchedNode.getCenter(), 100);
+						// Switch to add node window
+						setContentView(R.layout.layout1);
+						Button b1 = (Button) findViewById(R.id.buttonAdd);
+						EditText name = (EditText) findViewById(R.id.textName);
+						EditText det = (EditText) findViewById(R.id.textInfo);
+						name.setText( touchedNode.getMmElement().getName());
+						det.setText( touchedNode.getMmElement().getDetails());
+						b1.setOnClickListener(new View.OnClickListener() {
+
+							public void onClick(View v) {
+								EditText name = (EditText) findViewById(R.id.textName);
+								EditText det = (EditText) findViewById(R.id.textInfo);
+								String tmpName = name.getText().toString();
+								MMElement e1 =  touchedNode.getMmElement();
+								e1.setName(tmpName);
+								e1.setDetails(det.getText().toString());
+								setContentView(mGLView);
+
+								drawPannel();
+								// Back to 3D view
+							}
+						});
+					}
+					else if (currentMode == OpMode.DELETE) {
 						if (touchedNode != null
 								&& touchedNode != andMap.getRootNode()) {
 							map.removeElement(touchedNode.getMmElement());
@@ -324,29 +358,29 @@ public class Obj3DView extends Activity {
 	protected boolean isFullscreenOpaque() {
 		return true;
 	}
-	
+
 	// Create an option menu
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.main_menu, menu);
-	    return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		return true;
 	}
-	
+
 	// Handle click events on option menu
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
-	    switch (item.getItemId()) {
-	        case R.id.import_xml:
-	            renderer.readXML();
-	            return true;
-	        case R.id.export_xml:
-	            renderer.writeXML();
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.import_xml:
+			renderer.readXML();
+			return true;
+		case R.id.export_xml:
+			renderer.writeXML();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	/*
@@ -391,11 +425,11 @@ public class Obj3DView extends Activity {
 
 				/* Loding mindmap goes here */
 				test();
-				
-//				Link2 k=new Link2(100);
-//				k.strip();
-//				k.build();
-//				world.addObject(k);
+
+				// Link2 k=new Link2(100);
+				// k.strip();
+				// k.build();
+				// world.addObject(k);
 				// finished loading
 				MemoryHelper.compact();
 
@@ -407,99 +441,99 @@ public class Obj3DView extends Activity {
 		}
 
 		private void test() {
-			map = new MapData("test map");
+			map = new MapData("Root");
 			MMElement root = map.getRoot();
 
-			MMElement n1 = new MMElement();
-			n1.setName("n1");
-			n1.setDetails("details");
-			map.addElement(n1, root);
-
-			MMElement n2 = new MMElement();
-			n2.setName("n2");
-			n1.setDetails("details");
-			map.addElement(n2, root);
-
-			MMElement n3 = new MMElement();
-			n3.setName("n3");
-			map.addElement(n3, root);
-
-			MMElement n4 = new MMElement();
-			n4.setName("n4");
-			map.addElement(n4, root);
-
-			MMElement n5 = new MMElement();
-			n5.setName("n5");
-			map.addElement(n5, root);
-
-			MMElement n6 = new MMElement();
-			n6.setName("n6");
-			map.addElement(n6, root);
-
-			MMElement n7 = new MMElement();
-			n7.setName("n7");
-			map.addElement(n7, root);
-
-			MMElement n8 = new MMElement();
-			n8.setName("n8");
-			map.addElement(n8, root);
-			// // ******************** child group 1***************************
-			MMElement n61 = new MMElement();
-			n61.setName("n61");
-			map.addElement(n61, n6);
-
-			// // **************************************************************
-			//
-			// // ******************* child group 2****************************
-
-			MMElement n51 = new MMElement();
-			n51.setName("n51");
-			map.addElement(n51, n5);
-
-			MMElement n52 = new MMElement();
-			n52.setName("n52");
-			map.addElement(n52, n5);
-
-			MMElement n53 = new MMElement();
-			n53.setName("n53");
-			map.addElement(n53, n5);
-			// *******************************
-
-			// ******************** child group 3
-			// ****************************
-			MMElement n311 = new MMElement();
-			n311.setName("n311");
-			map.addElement(n311, n61);
-
-			MMElement n312 = new MMElement();
-			n312.setName("n312");
-			map.addElement(n312, n61);
-
-			MMElement n313 = new MMElement();
-			n313.setName("n313");
-			map.addElement(n313, n61);
-
-			// // **************** child group 5**************
-
-			MMElement n41 = new MMElement();
-			n41.setName("n41");
-			map.addElement(n41, n4);
-
-			MMElement n31 = new MMElement();
-			n31.setName("n31");
-			map.addElement(n31, n3);
-
-			MMElement n32 = new MMElement();
-			n32.setName("n32");
-			map.addElement(n32, n3);
-
-			MMElement n21 = new MMElement();
-			n21.setName("n21");
-			map.addElement(n21, n2);
-
-			MMElement n22 = new MMElement();
-			n22.setName("n22");
-			map.addElement(n22, n2);
+//			MMElement n1 = new MMElement();
+//			n1.setName("n1");
+//			n1.setDetails("details");
+//			map.addElement(n1, root);
+//
+//			MMElement n2 = new MMElement();
+//			n2.setName("n2");
+//			n1.setDetails("details");
+//			map.addElement(n2, root);
+//
+//			MMElement n3 = new MMElement();
+//			n3.setName("n3");
+//			map.addElement(n3, root);
+//
+//			MMElement n4 = new MMElement();
+//			n4.setName("n4");
+//			map.addElement(n4, root);
+//
+//			MMElement n5 = new MMElement();
+//			n5.setName("n5");
+//			map.addElement(n5, root);
+//
+//			MMElement n6 = new MMElement();
+//			n6.setName("n6");
+//			map.addElement(n6, root);
+//
+//			MMElement n7 = new MMElement();
+//			n7.setName("n7");
+//			map.addElement(n7, root);
+//
+//			MMElement n8 = new MMElement();
+//			n8.setName("n8");
+//			map.addElement(n8, root);
+//			// // ******************** child group 1***************************
+//			MMElement n61 = new MMElement();
+//			n61.setName("n61");
+//			map.addElement(n61, n6);
+//
+//			// // **************************************************************
+//			//
+//			// // ******************* child group 2****************************
+//
+//			MMElement n51 = new MMElement();
+//			n51.setName("n51");
+//			map.addElement(n51, n5);
+//
+//			MMElement n52 = new MMElement();
+//			n52.setName("n52");
+//			map.addElement(n52, n5);
+//
+//			MMElement n53 = new MMElement();
+//			n53.setName("n53");
+//			map.addElement(n53, n5);
+//			// *******************************
+//
+//			// ******************** child group 3
+//			// ****************************
+//			MMElement n311 = new MMElement();
+//			n311.setName("n311");
+//			map.addElement(n311, n61);
+//
+//			MMElement n312 = new MMElement();
+//			n312.setName("n312");
+//			map.addElement(n312, n61);
+//
+//			MMElement n313 = new MMElement();
+//			n313.setName("n313");
+//			map.addElement(n313, n61);
+//
+//			// // **************** child group 5**************
+//
+//			MMElement n41 = new MMElement();
+//			n41.setName("n41");
+//			map.addElement(n41, n4);
+//
+//			MMElement n31 = new MMElement();
+//			n31.setName("n31");
+//			map.addElement(n31, n3);
+//
+//			MMElement n32 = new MMElement();
+//			n32.setName("n32");
+//			map.addElement(n32, n3);
+//
+//			MMElement n21 = new MMElement();
+//			n21.setName("n21");
+//			map.addElement(n21, n2);
+//
+//			MMElement n22 = new MMElement();
+//			n22.setName("n22");
+//			map.addElement(n22, n2);
 
 			mm1 = new MindMath(25);
 			mm1.positionGenerate(root);
@@ -541,6 +575,7 @@ public class Obj3DView extends Activity {
 		/**
 		 * read map from XML file
 		 */
+		
 		public void readXML() {
 			try {
 
@@ -556,8 +591,16 @@ public class Obj3DView extends Activity {
 					xmlString += readString;
 
 				}
+				
+				world.removeAllObjects();
 				FileFormat xmlformat = new XMLFile();
 				xmlformat.readFormat(xmlString, map);
+				mm1 = new MindMath(25);
+				mm1.positionGenerate(map.getRoot());
+
+				
+				andMap = new AndObj(map, world);
+				touchedNode = andMap.getRootNode();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -599,28 +642,33 @@ public class Obj3DView extends Activity {
 		}
 
 		private void addCaptionToANode(MMElement e1, GLFont glFont) {
+			try {
 
-			SimpleVector pos = new SimpleVector(e1.getPosition().getX(), e1
-					.getPosition().getY(), e1.getPosition().getZ());
-			SimpleVector dir = Interact2D.project3D2D(cam, fb, pos);
+				SimpleVector pos = new SimpleVector(e1.getPosition().getX(), e1
+						.getPosition().getY(), e1.getPosition().getZ());
+				SimpleVector dir = Interact2D.project3D2D(cam, fb, pos);
 
-			if (dir != null) {
-				if (touchedNode != null && touchedNode.getMmElement() == e1) {
-					glFont.blitString(fb, e1.getName(), (int) dir.x,
-							(int) dir.y, (int) dir.z + 10, RGBColor.GREEN);
-					if (touchedNode.getMmElement().getDetails() != null) {
-						glFont.blitString(fb, "Details "
-								+ touchedNode.getMmElement().getDetails(), 30,
-								40, 10, RGBColor.GREEN);
+				if (dir != null) {//
+					if (touchedNode != null && touchedNode.getMmElement() == e1) {
+						glFont.blitString(fb, e1.getName(), (int) dir.x,
+								(int) dir.y, (int) dir.z + 10, RGBColor.GREEN);
+						if (touchedNode.getMmElement().getDetails() != null) {
+							glFont.blitString(fb, "Details "
+									+ touchedNode.getMmElement().getDetails(),
+									30, 40, 10, RGBColor.GREEN);
+							
+						}
+					} else {
+						glFont.blitString(fb, e1.getName(), (int) dir.x,
+								(int) dir.y, (int) dir.z + 10, RGBColor.WHITE);
+
 					}
-				} else {
-					glFont.blitString(fb, e1.getName(), (int) dir.x,
-							(int) dir.y, (int) dir.z + 10, RGBColor.WHITE);
-
 				}
-			}
-			for (MMElement c1 : e1.getChildren()) {
-				addCaptionToANode(c1, glFont);
+				for (MMElement c1 : e1.getChildren()) {
+					addCaptionToANode(c1, glFont);
+				}
+			}catch(Exception e){
+				
 			}
 		}
 	}
